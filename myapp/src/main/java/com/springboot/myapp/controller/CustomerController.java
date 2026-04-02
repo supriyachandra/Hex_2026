@@ -1,11 +1,14 @@
 package com.springboot.myapp.controller;
 
 import com.springboot.myapp.dto.CustomerReqDto;
+import com.springboot.myapp.dto.CustomerSignUpDto;
 import com.springboot.myapp.dto.TicketResPageDto;
 import com.springboot.myapp.model.Customer;
 import com.springboot.myapp.service.CustomerService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,9 +20,16 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
-    @PostMapping("/add")
-    public Customer insertCustomer(@Valid @RequestBody CustomerReqDto customerReqDto){
-        return customerService.insertCustomer(customerReqDto);
+//    @PostMapping("/add")
+//    public Customer insertCustomer(@Valid @RequestBody CustomerReqDto customerReqDto){
+//        return customerService.insertCustomer(customerReqDto);
+//    }
+
+    // Customer Sign Up -- access: anyone, permit all
+    @PostMapping("/sign-up")
+    public ResponseEntity<?> customerSignUp(@RequestBody CustomerSignUpDto customerSignUpDto){
+        customerService.customerSignUp(customerSignUpDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/get-all")

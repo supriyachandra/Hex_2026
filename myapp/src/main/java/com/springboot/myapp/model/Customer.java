@@ -1,15 +1,13 @@
 package com.springboot.myapp.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@Table(name = "customers")
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
@@ -22,4 +20,7 @@ public class Customer {
     private String name;
     private String email;
     private String city;
+
+    @OneToOne
+    private User user;
 }

@@ -1,6 +1,7 @@
 package com.springboot.myapp.repository;
 
 import com.springboot.myapp.dto.FilterReqDto;
+import com.springboot.myapp.dto.TicketCustomerDto;
 import com.springboot.myapp.dto.TicketRespDto;
 import com.springboot.myapp.enums.TicketPriority;
 import com.springboot.myapp.enums.TicketStatus;
@@ -20,4 +21,24 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
             and (?2 is NULL or t.ticketStatus= ?2)
         """)
     List<TicketRespDto> getByPriorityAndStatus(TicketPriority priority, TicketStatus status);
+
+    @Query("""
+                select t.id, t.subject, t.ticketStatus, t.ticketPriority,
+                t.createdAt, t.customer.name, t.executive.name, t.executive.jobTitle
+                from Ticket t where t.customer.id= ?1
+                """)
+    List<TicketCustomerDto> getTicketByCustomerId(long customerId);
+
+    @Query("select t from Ticket t where t.customer.user.username=?1")
+    List<Ticket> getTicketsByUsername(String username);
 }
+/*
+id
+subject
+status
+priority
+createdAt
+customerName
+executiveName
+executiveJobTitle
+ */

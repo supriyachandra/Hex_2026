@@ -42,7 +42,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleResourceNotFoundException(ResourceNotFoundException e){
         Map<String, Object> map= new HashMap<>();
 
-        map.put("message","ID not found");
+        map.put("message",e.getMessage());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
     }

@@ -1,28 +1,27 @@
 package com.springboot.myapp.model;
 
-import com.springboot.myapp.enums.JobTitle;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Entity
-@Table(name = "executives")
-@AllArgsConstructor
+@Table(name = "plans")
 @NoArgsConstructor
-@Setter
+@AllArgsConstructor
 @Getter
-public class Executive {
+@Setter
+public class Plan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
-    private String name;
+    @Column(name = "plan_name")
+    private String planName;
 
-    @Enumerated(EnumType.STRING)
-    private JobTitle jobTitle;
-
-    @OneToOne
-    private User user;
+    private BigDecimal price;
+    private int days;
 }
