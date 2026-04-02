@@ -34,12 +34,18 @@ public class Appointment {
     @Enumerated(EnumType.STRING)
     private VisitType visitType;
 
+    @Enumerated(EnumType.STRING)
     private AppointmentStatus appointmentStatus;
 
     @CurrentTimestamp
     @Column(name = "created_at")
     private Instant createdAt;
 
-    //doctor_id (FK)
-    //patient_id (FK)
+    @ManyToOne
+    private Doctor doctor;
+    // 1 doctor- M appointments
+
+    @ManyToOne
+    private Patient patient;
+    // 1 patient- M appointments
 }

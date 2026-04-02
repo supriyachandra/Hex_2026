@@ -1,12 +1,15 @@
 package com.project.amazecare.model;
 
 import com.project.amazecare.enums.Gender;
+import com.project.amazecare.enums.PatientType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.Instant;
 import java.time.LocalDate;
 
 @Entity
@@ -27,5 +30,14 @@ public class Patient {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    private Long phone;
+    private String phone;
+
+    @CreationTimestamp
+    @Column(name = "created_at")
+    private Instant createdAt;
+
+    @OneToOne
+    private User user;
+
+    private PatientType patientType;
 }

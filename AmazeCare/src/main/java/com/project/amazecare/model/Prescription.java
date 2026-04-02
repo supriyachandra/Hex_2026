@@ -20,5 +20,8 @@ public class Prescription {
     private String medicineName;
 
     private String dosage;
-    //- consultation_id (FK)
+
+    @ManyToOne
+    private Consultation consultation;
+    // 1 Consultation: M Prescription
 }

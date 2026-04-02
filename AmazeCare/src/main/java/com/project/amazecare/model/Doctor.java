@@ -1,13 +1,13 @@
 package com.project.amazecare.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.Instant;
 
 @Entity
 @AllArgsConstructor
@@ -21,8 +21,19 @@ public class Doctor {
 
     private String name;
     private int experience;
+    private String phone;
+    private String email;
     private String qualification;
     private String designation;
 
-    // specialization ID (foreign key from table Specialization)
+    @CreationTimestamp
+    @Column(name = "created_at")
+    private Instant createdAt;
+
+    @ManyToOne
+    private Specialization specialization;
+    // 1 specialization: M doctor
+
+    @OneToOne
+    private User user;
 }

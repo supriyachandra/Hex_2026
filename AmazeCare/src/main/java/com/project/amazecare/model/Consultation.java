@@ -25,5 +25,7 @@ public class Consultation {
     @Column(name = "symptom_notes")
     private String symptomNotes;
 
-    // - appointment_id (FK)
+    @OneToOne
+    private Appointment appointment;
+    // 1 Appointment: 1 Consult
 }

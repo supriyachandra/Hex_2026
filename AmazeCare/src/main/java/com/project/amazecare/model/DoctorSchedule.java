@@ -1,12 +1,12 @@
 package com.project.amazecare.model;
 
-import com.project.amazecare.enums.DayOfWeek;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
@@ -19,9 +19,7 @@ public class DoctorSchedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "day_of_week")
-    @Enumerated(EnumType.STRING)
-    private DayOfWeek dayOfWeek;
+    LocalDate date;
 
     @Column(name = "start_time")
     private LocalTime startTime;
@@ -32,6 +30,7 @@ public class DoctorSchedule {
     @Column(name = "slot_duration")
     private int slotDuration;
 
-    @Column(name = "is_available")
-    private boolean isAvailable;
+    @ManyToOne
+    private Doctor doctor;
+    // 1 doctor- M schedules
 }

@@ -18,5 +18,7 @@ public class RecommendedTests {
     @Column(name = "test_name")
     private String testName;
 
-    //- consultation_id (FK)
+    @ManyToOne
+    private Consultation consultation;
+    // 1 consultation: M tests
 }
