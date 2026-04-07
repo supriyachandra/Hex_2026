@@ -69,6 +69,7 @@ public class BookService {
 
         Book book= bookRepository.getByISBN(isbn)
                 .orElseThrow(()-> new ResourceNotFoundException("ISBN Invalid!"));
+
         bookRepository.deleteByISBN(isbn);
 
         log.atLevel(Level.INFO).log("Book deleted!");

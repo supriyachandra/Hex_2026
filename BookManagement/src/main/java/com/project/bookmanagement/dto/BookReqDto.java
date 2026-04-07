@@ -1,5 +1,6 @@
 package com.project.bookmanagement.dto;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -15,6 +16,7 @@ public record BookReqDto(
 
         @NotNull
         @Size(min = 5, max = 100)
+        @Column(unique = true)
         String ISBN,
         String publication_year
 ) {
