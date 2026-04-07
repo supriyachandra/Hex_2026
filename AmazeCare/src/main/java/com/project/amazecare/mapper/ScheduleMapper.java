@@ -11,7 +11,7 @@ public class ScheduleMapper {
         doctorSchedule.setDate(scheduleDto.date());
         doctorSchedule.setStartTime(scheduleDto.startTime());
         doctorSchedule.setEndTime(scheduleDto.endTime());
-        doctorSchedule.setSlotDuration(scheduleDto.duration());
+//      doctorSchedule.setSlotDuration(scheduleDto.duration());
         Doctor doctor= new Doctor();
         doctor.setId(scheduleDto.doctor_id());
         doctorSchedule.setDoctor(doctor);
@@ -20,10 +20,7 @@ public class ScheduleMapper {
 
     public static ScheduleRespDto mapToScheduleRespDto(DoctorSchedule doctorSchedule){
         return new ScheduleRespDto(
-                doctorSchedule.getDoctor().getName(),
-                doctorSchedule.getDate(),
-                doctorSchedule.getStartTime(),
-                doctorSchedule.getEndTime()
+                doctorSchedule.getDate()
         );
     }
 }

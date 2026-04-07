@@ -1,15 +1,13 @@
 package com.project.amazecare.controller;
 
-import com.project.amazecare.dto.AppointmentDto;
-import com.project.amazecare.dto.DoctorReqDto;
-import com.project.amazecare.dto.PatientReqDto;
-import com.project.amazecare.dto.PatientSignUpDto;
+import com.project.amazecare.dto.*;
 import com.project.amazecare.model.Patient;
 import com.project.amazecare.service.PatientService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,16 +25,30 @@ public class PatientController {
     public ResponseEntity<?> patientSignUp(@Valid @RequestBody PatientSignUpDto patientSignUpDto){
         patientService.patientSignUp(patientSignUpDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 
+    // create patient --- by ADMIN
+    @PostMapping("/create")
+    public ResponseEntity<?> createPatient(@Valid @RequestBody CreatePatientDto createPatientDto){
+        patientService.createPatient(createPatientDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     // Get: patient data (Profile page)
     // access: doctor
     @GetMapping("/get/{id}")
-        public PatientReqDto getById(@PathVariable long id){
-            return patientService.getById(id);
-        }
+    public PatientReqDto getById(@PathVariable long id){
+        return patientService.getById(id);
+    }
 
+    // by admin
+    @GetMapping("/get-all")
+    public List<CreatePatientDto> getAllPatients(
+            @RequestParam(value = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(value = "size", required = false, defaultValue = "5") int size
+    ){
+        return patientService.getAllPatients(page, size);
+    }
 }
 
 /*

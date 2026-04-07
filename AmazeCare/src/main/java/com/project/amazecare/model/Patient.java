@@ -39,5 +39,6 @@ public class Patient {
     @OneToOne
     private User user;
 
+    @Enumerated(EnumType.STRING)
     private PatientType patientType;
 }

@@ -28,4 +28,8 @@ public class Consultation {
     @OneToOne
     private Appointment appointment;
     // 1 Appointment: 1 Consult
+
+    @ManyToOne
+    private Admission admission;
+    // for admitted patient
 }

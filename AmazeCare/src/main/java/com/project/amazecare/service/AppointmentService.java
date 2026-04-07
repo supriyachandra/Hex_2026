@@ -1,8 +1,6 @@
 package com.project.amazecare.service;
 
-import com.project.amazecare.dto.AppointmentDto;
-import com.project.amazecare.dto.AppointmentRespDto;
-import com.project.amazecare.dto.RescheduleDto;
+import com.project.amazecare.dto.*;
 import com.project.amazecare.enums.AppointmentStatus;
 import com.project.amazecare.exception.AppointmentStatusUpdateException;
 import com.project.amazecare.exception.AppointmentUpdateException;
@@ -12,7 +10,9 @@ import com.project.amazecare.model.Appointment;
 import com.project.amazecare.model.Doctor;
 import com.project.amazecare.model.Patient;
 import com.project.amazecare.repository.AppointmentRepository;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,10 +22,12 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Slf4j      //---------add logs here
 public class AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
     private final PatientService patientService;
+    private final DoctorService doctorService;
 
     public ResponseEntity<?> bookAppointment(AppointmentDto appointmentDto, String username, long doctor_id) {
         // Map to Appointment
@@ -130,5 +132,41 @@ public class AppointmentService {
 
         appointment.setAppointmentStatus(AppointmentStatus.CANCELLED);
         appointmentRepository.save(appointment);
+    }
+
+    public void bookPatientAppointment(@Valid AppointmentDto appointmentDto, long doctor_id, long patient_id) {
+        // Map to Appointment
+        Appointment appointment= AppointmentMapper.mapTo(appointmentDto);
+
+        // additional DI
+        Doctor doctor= new Doctor();
+        doctor.setId(doctor_id);
+
+        // get patient by username
+        Patient patient= patientService.getByPatientId(patient_id);
+
+        appointment.setAppointmentStatus(AppointmentStatus.PENDING);
+
+        //save to DB
+        appointment.setDoctor(doctor);
+        appointment.setPatient(patient);
+
+        appointmentRepository.save(appointment);
+    }
+
+    public List<PatientAppointmentDto> getAppointmentsWithFilter(FilterAppointmentDto filterAppointmentDto, String username) {
+        // get doctor ID using username
+        Doctor doctor= doctorService.getByUsername(username);
+        long doctor_id= doctor.getId();
+        List<Appointment> list= appointmentRepository.getAppointmentsWithFilter(
+                filterAppointmentDto.status(),
+                filterAppointmentDto.name(),
+                filterAppointmentDto.date(),
+                doctor_id
+        );
+
+        return list.stream()
+                .map(AppointmentMapper::mapToPatientAppointmentDto)
+                .toList();
     }
 }

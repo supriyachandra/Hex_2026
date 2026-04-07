@@ -1,8 +1,8 @@
 package com.project.amazecare.cofig;
 
-import com.project.amazecare.exception.AppointmentStatusUpdateException;
-import com.project.amazecare.exception.AppointmentUpdateException;
-import com.project.amazecare.exception.ResourceNotFoundException;
+import com.project.amazecare.exception.*;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.event.Level;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -17,10 +17,14 @@ import java.util.List;
 import java.util.Map;
 
 @ControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
+
+    String m= "Message";
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> getMethodArgumentNotValidException(MethodArgumentNotValidException e){
+        log.atLevel(Level.WARN).log(e.getMessage());
         Map<String, Object> map= new HashMap<>();
         BindingResult bindingResult= e.getBindingResult();
         List<FieldError> list= bindingResult.getFieldErrors();
@@ -32,37 +36,70 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<?> getHttpMessageNotReadableException(HttpMessageNotReadableException e){
+    public ResponseEntity<Map<String, Object>> getHttpMessageNotReadableException(HttpMessageNotReadableException e){
+        log.atLevel(Level.WARN).log(e.getMessage());
         Map<String, Object> map= new HashMap<>();
 
-        map.put("message", e.getMessage());
+        map.put(m, e.getMessage());
 
         return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(map);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<?> handleResourceNotFoundException(ResourceNotFoundException e){
+    public ResponseEntity<Map<String, Object>> handleResourceNotFoundException(ResourceNotFoundException e){
+        log.atLevel(Level.WARN).log(e.getMessage());
         Map<String, Object> map= new HashMap<>();
 
-        map.put("Message", e.getMessage());
+        map.put(m, e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
     }
 
     @ExceptionHandler(AppointmentUpdateException.class)
-    public ResponseEntity<?> handleAppointmentUpdateException(AppointmentUpdateException e){
+    public ResponseEntity<Map<String, Object>> handleAppointmentUpdateException(AppointmentUpdateException e){
+        log.atLevel(Level.WARN).log(e.getMessage());
         Map<String, Object> map= new HashMap<>();
 
-        map.put("message", e.getMessage());
+        map.put(m, e.getMessage());
 
         return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(map);
     }
 
 
     @ExceptionHandler(AppointmentStatusUpdateException.class)
-    public ResponseEntity<?> handleAppointmentStatusUpdateException(AppointmentStatusUpdateException e){
+    public ResponseEntity<Map<String, Object>> handleAppointmentStatusUpdateException(AppointmentStatusUpdateException e){
+        log.atLevel(Level.WARN).log(e.getMessage());
         Map<String, Object> map= new HashMap<>();
 
-        map.put("message", e.getMessage());
+        map.put(m, e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(map);
+    }
+
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<Map<String, Object>> handleNullPointerException(NullPointerException e){
+        log.atLevel(Level.WARN).log(e.getMessage());
+        Map<String, Object> map= new HashMap<>();
+        map.put(m, e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(map);
+    }
+
+
+    @ExceptionHandler(PatientAlreadyExistsException.class)
+    public ResponseEntity<Map<String, Object>> handlePatientAlreadyExistsException(PatientAlreadyExistsException e){
+        log.atLevel(Level.WARN).log(e.getMessage());
+        Map<String, Object> map= new HashMap<>();
+        map.put(m, e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(map);
+    }
+
+
+    @ExceptionHandler(AppointmentAndAdmissionException.class)
+    public ResponseEntity<Map<String, Object>> handleAppointmentAndAdmissionException(AppointmentAndAdmissionException e){
+        log.atLevel(Level.WARN).log(e.getMessage());
+        Map<String, Object> map= new HashMap<>();
+        map.put(m, e.getMessage());
 
         return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(map);
     }

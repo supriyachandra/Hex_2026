@@ -9,6 +9,7 @@ import com.project.amazecare.exception.ResourceNotFoundException;
 import com.project.amazecare.mapper.DoctorMapper;
 import com.project.amazecare.mapper.PatientMapper;
 import com.project.amazecare.model.*;
+import com.project.amazecare.repository.AdmissionRepository;
 import com.project.amazecare.repository.DoctorRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,6 +27,7 @@ public class DoctorService {
     private final DoctorRepository doctorRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
+    private final AdmissionRepository admissionRepository;
 
     public void addDoctor(DoctorSignUpDto doctorSignUpDto) {
         // map to doctor
@@ -76,5 +78,14 @@ public class DoctorService {
         Doctor doctor= doctorRepository.findById(doctorId).
                 orElseThrow(()-> new ResourceNotFoundException("Invalid Doctor ID"));
         return DoctorMapper.mapToRespDto(doctor);
+    }
+
+    public Doctor getById(long id) {
+        return doctorRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Doctor ID Invalid"));
+    }
+
+    public Doctor getByUsername(String username) {
+        return doctorRepository.getByUsername(username);
     }
 }

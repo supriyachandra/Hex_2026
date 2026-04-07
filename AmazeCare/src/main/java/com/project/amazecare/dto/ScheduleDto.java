@@ -7,7 +7,6 @@ public record ScheduleDto(
         LocalDate date,
         LocalTime startTime,
         LocalTime endTime,
-        int duration,
         Long doctor_id
 ) {
 }

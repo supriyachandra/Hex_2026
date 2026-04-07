@@ -2,6 +2,7 @@ package com.project.amazecare.mapper;
 
 import com.project.amazecare.dto.AppointmentDto;
 import com.project.amazecare.dto.AppointmentRespDto;
+import com.project.amazecare.dto.PatientAppointmentDto;
 import com.project.amazecare.enums.VisitType;
 import com.project.amazecare.model.Appointment;
 
@@ -31,5 +32,13 @@ public class AppointmentMapper {
                 appointment.getAppointmentStatus()
         );
     }
-    //(app_id, app_date, patient_id, patient name, doctor_id, docter_specialization,  doctor_name, status)
+
+    public static PatientAppointmentDto mapToPatientAppointmentDto(Appointment appointment){
+        return new PatientAppointmentDto(
+                appointment.getPatient().getName(),
+                appointment.getAppointmentDate(),
+                appointment.getTimeSlot(),
+                appointment.getAppointmentStatus()
+        );
+    }
 }

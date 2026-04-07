@@ -27,9 +27,6 @@ public class DoctorSchedule {
     @Column(name = "end_time")
     private LocalTime endTime;
 
-    @Column(name = "slot_duration")
-    private int slotDuration;
-
     @ManyToOne
     private Doctor doctor;
     // 1 doctor- M schedules

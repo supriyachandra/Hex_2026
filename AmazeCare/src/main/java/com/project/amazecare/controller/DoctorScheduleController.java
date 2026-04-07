@@ -2,12 +2,15 @@ package com.project.amazecare.controller;
 
 import com.project.amazecare.dto.ScheduleDto;
 import com.project.amazecare.dto.ScheduleRespDto;
+import com.project.amazecare.dto.TimeSlotsDto;
 import com.project.amazecare.service.DoctorScheduleService;
 import lombok.AllArgsConstructor;
+import org.hibernate.grammars.hql.HqlParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -24,9 +27,16 @@ public class DoctorScheduleController {
     }
 
     // Access: authenticated
-    // get schedule and doctor name by doctor id
+    // get scheduled upcoming Dates and doctor name by doctor id
     @GetMapping("/get-by/{doctor_id}")
     public List<ScheduleRespDto> scheduleByDoctor(@PathVariable long doctor_id){
         return doctorScheduleService.scheduleByDoctor(doctor_id);
+    }
+
+    // get time slots available for a particular selected date
+    @GetMapping("/get-time-by/{doctor_id}/{date}")
+    public List<TimeSlotsDto> timeByDoctorAndDate(@PathVariable long doctor_id,
+                                                  @PathVariable LocalDate date){
+        return doctorScheduleService.timeByDoctorAndDate(doctor_id, date);
     }
 }

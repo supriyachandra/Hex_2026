@@ -8,6 +8,11 @@ import java.util.List;
 
 public interface DoctorScheduleRepository extends JpaRepository<DoctorSchedule, Long> {
 
-    @Query("select ds from DoctorSchedule ds where ds.doctor.id= ?1")
+    @Query("""
+            select ds from DoctorSchedule ds
+            where ds.doctor.id= ?1
+            and ds.date>= current date
+            order by ds.date asc
+            """)
     List<DoctorSchedule> findByDoctorId(long doctorId);
 }

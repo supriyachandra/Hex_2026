@@ -36,6 +36,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/patient/sign-up")
                         .permitAll()
 
+                        .requestMatchers(HttpMethod.POST, "/api/patient/create")
+                        .hasAuthority("ADMIN")
+
                         .requestMatchers(HttpMethod.GET,"/api/doctor/get-all")
                         .permitAll()
 
@@ -48,8 +51,14 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/schedule/get-by/{doctor_id}")
                         .authenticated()
 
+                        .requestMatchers(HttpMethod.GET, "/api/schedule/get-time-by/{doctor_id}/{date}")
+                        .authenticated()
+
                         .requestMatchers(HttpMethod.GET,"/api/patient/get/{id}")
                         .hasAuthority("DOCTOR")
+
+                        .requestMatchers(HttpMethod.GET, "/api/patient/get-all")
+                        .hasAuthority("ADMIN")
 
                         .requestMatchers(HttpMethod.POST, "/api/schedule/add")
                         .hasAuthority("ADMIN")
@@ -72,7 +81,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/admin/add")
                         .hasAuthority("ADMIN")
 
-                        .requestMatchers(HttpMethod.GET, "api/consultation/add")
+                        .requestMatchers(HttpMethod.POST, "/api/appointment/book/{doctor_id}/patient_id")
+                        .hasAuthority("ADMIN")
+
+                        .requestMatchers(HttpMethod.POST, "api/consultation/add")
                         .hasAuthority("DOCTOR")
 
                         .requestMatchers(HttpMethod.PUT, "/api/appointment/reschedule/{appointment_id}")
@@ -80,6 +92,25 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.PUT, "/api/appointment/cancel/{appointment_id}")
                         .hasAuthority("PATIENT")
+
+                        .requestMatchers(HttpMethod.GET, "/api/appointment/get-all/v1")
+                        .hasAuthority("ADMIN")
+
+                        .requestMatchers(HttpMethod.GET, "/api/appointment/get-all/filter")
+                        .hasAuthority("DOCTOR")
+
+                        .requestMatchers(HttpMethod.POST, "/api/admission/admit")
+                        .hasAuthority("ADMIN")
+
+                        .requestMatchers(HttpMethod.PUT, "/api/admission/discharge/{admission_id}")
+                        .hasAuthority("ADMIN")
+
+                        .requestMatchers(HttpMethod.POST, "/api/prescription/add")
+                        .hasAuthority("DOCTOR")
+
+                        .requestMatchers(HttpMethod.POST, "/api/tests/add")
+                        .hasAuthority("DOCTOR")
+
                         .anyRequest().permitAll()
                 );
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class); // jwt tokenization

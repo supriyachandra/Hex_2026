@@ -1,8 +1,6 @@
 package com.project.amazecare.controller;
 
-import com.project.amazecare.dto.AppointmentDto;
-import com.project.amazecare.dto.AppointmentRespDto;
-import com.project.amazecare.dto.RescheduleDto;
+import com.project.amazecare.dto.*;
 import com.project.amazecare.service.AppointmentService;
 import com.project.amazecare.service.PatientService;
 import jakarta.validation.Valid;
@@ -30,6 +28,15 @@ public class AppointmentController {
                                              @PathVariable long doctor_id,
                                              Principal principal){
         return appointmentService.bookAppointment(appointmentDto, principal.getName(), doctor_id);
+    }
+
+    // Book Appointment--- By admin (add in securityconfig)
+    @PostMapping("book/{doctor_id}/{patient_id}")
+    public ResponseEntity<?> bookPatientAppointment(@Valid @RequestBody AppointmentDto appointmentDto,
+                                                    @PathVariable long doctor_id,
+                                                    @PathVariable long patient_id){
+        appointmentService.bookPatientAppointment(appointmentDto, doctor_id, patient_id);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     // edit Appointment status -- doctor clicks confirm button
@@ -65,10 +72,21 @@ public class AppointmentController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    // view appointments
+    // view appointments- for admin
     //(app_id, app_date, patient_id, patient name, doctor_id, doctor_specialization,  doctor_name, status)
-    @GetMapping("/get-all")
+    @GetMapping("/get-all/v1")
     public List<AppointmentRespDto> viewAppointments(){
         return appointmentService.viewAppointments();
+    }
+
+
+    // api to get appointments, with patient name, date, time, status
+    // doctor should get HIS patient's appointments only so use principal
+    // dynamic filtering, use filter using status, date, and name of patient
+    @GetMapping("/get-all/filter")
+    public List<PatientAppointmentDto> getAppointmentsWithFilter(
+            @RequestBody FilterAppointmentDto filterAppointmentDto,
+            Principal principal){
+        return appointmentService.getAppointmentsWithFilter(filterAppointmentDto, principal.getName());
     }
 }

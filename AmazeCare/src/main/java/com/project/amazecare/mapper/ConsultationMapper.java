@@ -12,4 +12,5 @@ public class ConsultationMapper {
         consultation.setSymptomNotes(consultReqDto.symptomNotes());
         return consultation;
     }
+
 }

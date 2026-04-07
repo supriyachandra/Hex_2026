@@ -12,11 +12,14 @@ import com.project.amazecare.model.User;
 import com.project.amazecare.repository.AdminRepository;
 import com.project.amazecare.repository.DoctorRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.event.Level;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class AdminService {
 
     private final AdminRepository adminRepository;
@@ -24,6 +27,8 @@ public class AdminService {
     private final UserService userService;
 
     public void addAdmin(AddAdminDto addAdminDto) {
+        log.atLevel(Level.INFO).log("Called addAdmin: Add new admin");
+
         Admin admin= AdminMapper.mapToAdmin(addAdminDto);
 
         // user creation, add username and encoded password, save user, DI into admin
@@ -36,5 +41,7 @@ public class AdminService {
         admin.setUser(user);
 
         adminRepository.save(admin);
+
+        log.atLevel(Level.INFO).log("Admin Added!");
     }
 }

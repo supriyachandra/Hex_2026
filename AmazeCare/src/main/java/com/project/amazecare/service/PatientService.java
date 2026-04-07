@@ -1,9 +1,7 @@
 package com.project.amazecare.service;
 
-import com.project.amazecare.dto.AppointmentDto;
-import com.project.amazecare.dto.DoctorReqDto;
-import com.project.amazecare.dto.PatientReqDto;
-import com.project.amazecare.dto.PatientSignUpDto;
+import com.project.amazecare.dto.*;
+import com.project.amazecare.enums.PatientType;
 import com.project.amazecare.enums.Role;
 import com.project.amazecare.exception.ResourceNotFoundException;
 import com.project.amazecare.mapper.DoctorMapper;
@@ -15,6 +13,7 @@ import com.project.amazecare.repository.AppointmentRepository;
 import com.project.amazecare.repository.DoctorRepository;
 import com.project.amazecare.repository.PatientRepository;
 import com.project.amazecare.repository.UserRepository;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -45,6 +45,9 @@ public class PatientService {
         user.setPassword(passwordEncoder.encode(patientSignUpDto.password()));
         userService.saveUser(user);
 
+        // only allow OPD for online appointments
+        patient.setPatientType(PatientType.OPD);
+
         // save patient to DB
         patient.setUser(user);
         patientRepository.save(patient);
@@ -57,7 +60,31 @@ public class PatientService {
         return PatientMapper.mapToDto(patient);
     }
 
+    public Patient getByPatientId(long id) {
+        return patientRepository.findById(id).orElseThrow(
+                ()-> new ResourceNotFoundException("Invalid Patient ID"));
+    }
+
     public Patient getByUsername(String username) {
         return appointmentRepository.getByUsername(username);
+    }
+
+    public void createPatient(@Valid CreatePatientDto createPatientDto) {
+        Patient patient= PatientMapper.mapFromCreatePatient(createPatientDto);
+        patientRepository.save(patient);
+    }
+
+    public void savePatient(Patient patient) {
+        patientRepository.save(patient);
+    }
+
+    public List<CreatePatientDto> getAllPatients(int page, int size) {
+        Pageable pageable= PageRequest.of(page, size);
+
+        Page<Patient> patientPage= patientRepository.findAll(pageable);
+
+        return patientPage.stream()
+                .map(PatientMapper::mapToCreatePatientDto)
+                .toList();
     }
 }
