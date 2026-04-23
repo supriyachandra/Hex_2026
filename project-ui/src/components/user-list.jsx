@@ -14,7 +14,9 @@ export function UserList() {
                 setUsers(response.data)
                 //console.log(response.data)
             }
-            catch (err) { err }
+            catch (err) { 
+                console.log(err)
+            }
         }
         fetchUsers()
     }, [])
