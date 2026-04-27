@@ -39,4 +39,7 @@ public class Book {
     @UpdateTimestamp
     private Instant updatedAt;
 
+    @ManyToOne
+    private Author authorEntity;
+
 }

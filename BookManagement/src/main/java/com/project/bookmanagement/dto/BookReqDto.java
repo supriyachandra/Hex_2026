@@ -18,6 +18,8 @@ public record BookReqDto(
         @Size(min = 5, max = 100)
         @Column(unique = true)
         String ISBN,
-        String publication_year
+        String publication_year,
+
+        long author_id
 ) {
 }

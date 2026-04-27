@@ -2,6 +2,7 @@ package com.project.amazecare.mapper;
 
 import com.project.amazecare.dto.CreatePatientDto;
 import com.project.amazecare.dto.PatientReqDto;
+import com.project.amazecare.dto.PatientRespDto;
 import com.project.amazecare.dto.PatientSignUpDto;
 import com.project.amazecare.model.Patient;
 import org.slf4j.helpers.CheckReturnValue;
@@ -41,7 +42,6 @@ public class PatientMapper {
         patient.setGender(createPatientDto.gender());
         patient.setDateOfBirth(createPatientDto.DOB());
         patient.setPhone(createPatientDto.phone());
-        patient.setPatientType(createPatientDto.patientType());
         return patient;
     }
 
@@ -50,8 +50,17 @@ public class PatientMapper {
                 patient.getName(),
                 patient.getDateOfBirth(),
                 patient.getGender(),
-                patient.getPhone(),
-                patient.getPatientType()
+                patient.getPhone()
+        );
+    }
+
+    public static PatientRespDto mapToRespDto(Patient patient){
+        return new PatientRespDto(
+                patient.getId(),
+                patient.getName(),
+                patient.getDateOfBirth(),
+                patient.getGender(),
+                patient.getPhone()
         );
     }
 }

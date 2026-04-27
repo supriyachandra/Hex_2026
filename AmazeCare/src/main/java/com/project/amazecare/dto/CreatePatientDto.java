@@ -19,8 +19,6 @@ public record CreatePatientDto(
         Gender gender,
         @NotNull
         @NotBlank
-        String phone,
-
-        PatientType patientType
+        String phone
 ) {
 }

@@ -1,5 +1,6 @@
 package com.springboot.myapp.config;
 
+import com.springboot.myapp.exceptions.AccessNotAllowedException;
 import com.springboot.myapp.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,5 +46,24 @@ public class GlobalExceptionHandler {
         map.put("message",e.getMessage());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
+    }
+
+
+    @ExceptionHandler(AccessNotAllowedException.class)
+    public ResponseEntity<?> handleAccessNotAllowedException(AccessNotAllowedException e){
+        Map<String, Object> map= new HashMap<>();
+
+        map.put("message",e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<?> handleRuntimeException(RuntimeException e){
+        Map<String, Object> map= new HashMap<>();
+
+        map.put("message",e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
     }
 }

@@ -28,7 +28,7 @@ public class DoctorMapper {
                 doctor.getEmail(),
                 doctor.getQualification(),
                 doctor.getDesignation(),
-                doctor.getSpecialization().getId()
+                doctor.getSpecialization().getName()
         );
     }
 
@@ -45,6 +45,7 @@ public class DoctorMapper {
 
     public static DoctorRespDto mapToRespDto(Doctor doctor){
         return new DoctorRespDto(
+                doctor.getId(),
                 doctor.getName(),
                 doctor.getExperience(),
                 doctor.getEmail(),

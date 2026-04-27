@@ -1,6 +1,7 @@
 package com.project.amazecare.model;
 
 import com.project.amazecare.enums.AppointmentStatus;
+import com.project.amazecare.enums.PatientType;
 import com.project.amazecare.enums.VisitType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -48,4 +49,7 @@ public class Appointment {
     @ManyToOne
     private Patient patient;
     // 1 patient- M appointments
+
+    @Enumerated(EnumType.STRING)
+    private PatientType patientType= PatientType.OPD;
 }

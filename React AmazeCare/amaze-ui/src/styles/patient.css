@@ -1,0 +1,342 @@
+/* SIDEBAR */
+.sidebar {
+    background-color: #ffffff;
+    height: 100vh;
+}
+
+.sidebar .nav-link {
+    color: #333;
+    border-radius: 8px;
+    padding: 8px 12px;
+}
+
+.sidebar-link:hover {
+    background-color: #e7f1ff;
+    color: #0d6efd;
+}
+
+.sidebar .nav-link.active {
+    background-color: #e6f0ff;
+    color: #0d6efd;
+    font-weight: 600;
+}
+
+.sidebar-logo img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* MAIN */
+.main-content {
+    background-color: #f8fafb;
+    min-height: 100vh;
+}
+
+/* HEADER */
+.page-header {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.page-header h2 {
+    font-weight: 600;
+}
+
+.page-header p {
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+/* DASHBOARD CARDS */
+.dashboard-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #eee;
+}
+
+/* MINI CARDS (Book by doctor/date) */
+.mini-card {
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid #f1f1f1;
+    background: #fafafa;
+}
+
+.mini-card.green i { color: #198754; }
+.mini-card.blue i { color: #0d6efd; }
+
+/* LINKS */
+.mini-link {
+    border: none;
+    background: none;
+    padding: 0;
+    font-weight: 500;
+}
+
+.mini-link.green { color: #198754; }
+.mini-link.blue { color: #0d6efd; }
+
+/* APPOINTMENT CARD (main page cards) */
+.appointment-card {
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #f1f1f1;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.2s ease;
+}
+
+.appointment-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* INFO ROW */
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 4px;
+    color: #555;
+}
+
+/* SYMPTOMS */
+.symptoms-box {
+    background: #f8f9fa;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    color: #666;
+}
+
+/* UPCOMING */
+.upcoming-card {
+    border: 1px solid #f1f1f1;
+    border-radius: 12px;
+    padding: 12px 14px;
+    background: #fafafa;
+}
+
+/* STATUS BADGE */
+.status-badge {
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-weight: 600;
+}
+
+/* STATUS COLORS */
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-confirmed {
+    background: #cfe2ff;
+    color: #084298;
+}
+
+.status-completed {
+    background: #d1e7dd;
+    color: #0f5132;
+}
+
+.status-cancelled {
+    background: #f8d7da;
+    color: #842029;
+}
+
+/* BUTTONS */
+.btn-cancel {
+    background: #dc3545;
+    color: white;
+    border-radius: 10px;
+    padding: 8px;
+    border: none;
+    transition: 0.2s;
+}
+
+.btn-cancel:hover {
+    background: #bb2d3b;
+}
+
+.btn-view {
+    background: #0d6efd;
+    color: white;
+    border-radius: 10px;
+    padding: 8px;
+    border: none;
+    transition: 0.2s;
+}
+
+.btn-view:hover {
+    background: #0b5ed7;
+}
+
+/* HISTORY CARD */
+.history-card {
+    background: #f8fafc;
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid #e5e7eb;
+}
+
+.label {
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    color: #6b7280;
+    margin-bottom: 4px;
+}
+
+/* Page background */
+.main-content {
+    background: #f6f8fb;
+    min-height: 100vh;
+}
+
+/* Card consistency */
+.dashboard-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #eef0f2;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+}
+
+/* Label */
+.label {
+    font-size: 12px;
+    color: #6b7280;
+    margin-bottom: 4px;
+    display: block;
+}
+
+/* Improve input look */
+input[type="date"] {
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    padding: 8px 10px;
+}
+
+/* Sidebar full height + subtle separation */
+.sidebar {
+    background: #ffffff;
+    border-right: 1px solid #eee;
+    min-height: 100vh;
+}
+
+/* Reduce excessive spacing */
+.card {
+    margin-bottom: 0;
+}
+
+/* Card */
+.doctor-card {
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #eef0f2;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.2s ease;
+}
+
+/* Hover effect */
+.doctor-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+}
+
+/* Doctor image */
+.doctor-img {
+    width: 70px;
+    height: 70px;
+    border-radius: 12px;
+    object-fit: cover;
+    border: 1px solid #eee;
+}
+
+/* Info text */
+.doctor-info p {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+}
+
+/* Button */
+.btn-book {
+    background: #0d6efd;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.btn-book:hover {
+    background: #0b5ed7;
+}
+
+table tbody tr:hover {
+    background: #f9fafb;
+}
+
+
+
+.card-body {
+    padding: 20px
+}
+
+/* 🔹 keep table clean */
+.table td {
+    vertical-align: middle;
+}
+
+/* 🔹 fix long text */
+.symptom-cell {
+    max-width: 250px;
+}
+
+.symptom-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 🔹 show full text on hover */
+.symptom-text:hover {
+    white-space: normal;
+    background: #f8f9fa;
+    padding: 6px;
+    border-radius: 6px;
+}
+
+/* 🔹 prevent action buttons from shrinking */
+.table td:last-child {
+    white-space: nowrap;
+}
+
+/* 🔹 better button spacing */
+.table .btn {
+    padding: 5px 10px;
+    font-size: 13px;
+}
+
+.date-display {
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    font-weight: 500;
+    color: #333;
+    width: fit-content;
+}
+
+.modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
+}

@@ -23,6 +23,13 @@ function App() {
             Add new User
           </button>
         </div>
+
+        <div className="col-sm-2">
+          <button className="btn btn-primary me-2"
+          onClick={()=> navigate('/pagination-list')}>
+            Pagination
+          </button>
+        </div>
       </div>
       
     </div>

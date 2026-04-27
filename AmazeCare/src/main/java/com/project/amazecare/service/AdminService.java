@@ -1,6 +1,7 @@
 package com.project.amazecare.service;
 
 import com.project.amazecare.dto.AddAdminDto;
+import com.project.amazecare.dto.AdminRespDto;
 import com.project.amazecare.dto.DoctorReqDto;
 import com.project.amazecare.enums.Role;
 import com.project.amazecare.mapper.AdminMapper;
@@ -43,5 +44,9 @@ public class AdminService {
         adminRepository.save(admin);
 
         log.atLevel(Level.INFO).log("Admin Added!");
+    }
+
+    public AdminRespDto getAdmin(String username) {
+        return adminRepository.getAdmin(username);
     }
 }

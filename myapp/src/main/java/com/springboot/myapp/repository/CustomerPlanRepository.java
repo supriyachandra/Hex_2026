@@ -15,4 +15,10 @@ public interface CustomerPlanRepository extends JpaRepository<CustomerPlan, Long
            join cp.plan p where cp.plan.id= ?1
            """)
     public List<CustomerByPlanDto> getCustomersByPlan(long planId);
+
+    @Query("""
+        select cp from CustomerPlan cp where cp.customer.user.username=?1
+        and current_date < cp.end_date
+        """)
+    List<CustomerPlan> getActivePlans(String username);
 }

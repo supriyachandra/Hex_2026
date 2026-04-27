@@ -1,6 +1,7 @@
 package com.springboot.myapp.service;
 
 import com.springboot.myapp.dto.CustomerReqDto;
+import com.springboot.myapp.dto.CustomerRespDto;
 import com.springboot.myapp.dto.CustomerSignUpDto;
 import com.springboot.myapp.enums.Role;
 import com.springboot.myapp.exceptions.ResourceNotFoundException;
@@ -85,5 +86,15 @@ public class CustomerService {
 
     public Customer getByUsername(String username) {
         return customerRepository.getByUsername(username);
+    }
+
+    public List<CustomerRespDto> getAll() {
+        List<Customer> customerList= customerRepository.getAllCustomers();
+
+        customerList.forEach(c -> System.out.println(c.getId()));
+
+        return customerList.stream()
+                .map(CustomerMapper::mapToRespDto)
+                .toList();
     }
 }

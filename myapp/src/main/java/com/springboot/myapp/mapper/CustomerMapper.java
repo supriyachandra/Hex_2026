@@ -1,6 +1,7 @@
 package com.springboot.myapp.mapper;
 
 import com.springboot.myapp.dto.CustomerReqDto;
+import com.springboot.myapp.dto.CustomerRespDto;
 import com.springboot.myapp.dto.CustomerSignUpDto;
 import com.springboot.myapp.model.Customer;
 
@@ -28,5 +29,14 @@ public class CustomerMapper {
         customer.setEmail(customerSignUpDto.email());
         customer.setCity(customerSignUpDto.city());
         return customer;
+    }
+
+    public static CustomerRespDto mapToRespDto(Customer customer){
+        return new CustomerRespDto(
+                customer.getId(),
+                customer.getName(),
+                customer.getEmail(),
+                customer.getCity()
+        );
     }
 }

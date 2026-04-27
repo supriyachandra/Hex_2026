@@ -1,4 +1,10 @@
 package com.project.bookmanagement.dto;
 
-public record EmployeeResPageDto() {
+import java.util.List;
+
+public record EmployeeResPageDto(
+        List<EmployeeResDto> data,
+        long totalRecords,
+        int totalPages
+) {
 }

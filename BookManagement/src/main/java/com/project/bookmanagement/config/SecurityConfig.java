@@ -47,6 +47,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/auth/login")
                         .permitAll()
 
+                        .requestMatchers(HttpMethod.GET, "/api/book/get-all/author")
+                        .hasAuthority("AUTHOR")
+
+                        .requestMatchers(HttpMethod.GET, "/api/employee/get-all")
+                        .permitAll()
 
                         .anyRequest().permitAll()
                 );

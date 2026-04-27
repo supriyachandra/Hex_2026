@@ -58,11 +58,35 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/customer/sign-up")
                         .permitAll()
 
+                        .requestMatchers(HttpMethod.GET, "/api/customer/get-one")
+                        .hasAuthority("CUSTOMER")
+
+                        .requestMatchers(HttpMethod.GET, "/api/customer/get-all")
+                        .hasAuthority("ADMIN")
+
                         .requestMatchers(HttpMethod.GET,"/api/auth/login")
+                        .permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/api/auth/user-details")
                         .authenticated()
 
                         .requestMatchers(HttpMethod.GET,"/api/ticket/get-all")
                         .permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/api/ticket/get-by/customer/{id}")
+                        .hasAuthority("ADMIN")
+
+                        .requestMatchers(HttpMethod.GET, "/api/ticket/stats")
+                        .hasAuthority("CUSTOMER")
+
+                        .requestMatchers(HttpMethod.PUT, "/api/ticket/update/status/{ticketId}/v2")
+                        .hasAuthority("CUSTOMER")
+
+                        .requestMatchers(HttpMethod.GET, "/api/ticket/stats/v2")
+                        .hasAuthority("CUSTOMER")
+
+                        .requestMatchers(HttpMethod.GET, "/api/ticket/get-all/{status}")
+                        .hasAuthority("CUSTOMER")
 
                         .requestMatchers(HttpMethod.GET,"/api/ticket/get/{id}")
                         .authenticated()
@@ -76,11 +100,20 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/customer/plan/assign-plan/{customerId}/{planId}")
                         .hasAuthority("ADMIN")
 
+                        .requestMatchers(HttpMethod.GET, "/api/customer/plan/active-plan")
+                        .hasAuthority("CUSTOMER")
+
                         .requestMatchers(HttpMethod.POST, "/api/customer/plan/buy-plan/{planId}")
                         .hasAuthority("CUSTOMER")
 
+                        .requestMatchers(HttpMethod.GET, "/api/plan/get-all")
+                        .permitAll()
+
                         .requestMatchers(HttpMethod.PUT, "/api/ticket/add/{ticketId}/{executiveId}")
                         .hasAuthority("ADMIN")
+
+                        .requestMatchers(HttpMethod.POST, "/api/document/upload")
+                        .hasAuthority("CUSTOMER")
 
                         .anyRequest().permitAll()
                 );

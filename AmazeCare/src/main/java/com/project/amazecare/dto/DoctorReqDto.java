@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record DoctorReqDto(
+
         @NotNull
         @Size(min=2, max=255)
         String name,
@@ -27,6 +28,6 @@ public record DoctorReqDto(
         String designation,
 
         @NotNull
-        long specialization_id
+        String specialization
 ) {
 }

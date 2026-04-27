@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,4 +34,10 @@ public class Consultation {
     @ManyToOne
     private Admission admission;
     // for admitted patient
+
+    @OneToMany(mappedBy = "consultation", cascade = CascadeType.ALL)
+    private List<Prescription> prescriptions;
+
+    @OneToMany(mappedBy = "consultation", cascade = CascadeType.ALL)
+    private List<RecommendedTests> tests;
 }

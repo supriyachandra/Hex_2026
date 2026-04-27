@@ -17,4 +17,11 @@ public class SpecializationService {
     public List<Specialization> getAllSpecialization() {
         return userRepository.getAll();
     }
+
+
+    public void add(String specialization) {
+        Specialization s= new Specialization();
+        s.setName(specialization);
+        specializationRepository.save(s);
+    }
 }

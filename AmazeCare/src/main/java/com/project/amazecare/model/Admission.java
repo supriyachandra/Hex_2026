@@ -1,6 +1,7 @@
 package com.project.amazecare.model;
 
 import com.project.amazecare.enums.AdmissionStatus;
+import com.project.amazecare.enums.PatientType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -47,4 +48,7 @@ public class Admission {
 
     @CreationTimestamp
     private Instant createdAt;
+
+    @Enumerated(EnumType.STRING)
+    private PatientType patientType= PatientType.IPD;
 }

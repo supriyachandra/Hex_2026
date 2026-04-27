@@ -1,5 +1,7 @@
 package com.project.bookmanagement.controller;
 
+import com.project.bookmanagement.dto.EmployeeResPageDto;
+import com.project.bookmanagement.enums.Status;
 import com.project.bookmanagement.service.EmployeeService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +17,9 @@ public class EmployeeController {
     @GetMapping("/get-all")
     public EmployeeResPageDto getEmployeesBy(@RequestParam(value = "page", defaultValue = "0", required = false) int page,
                                              @RequestParam(value = "size", defaultValue = "5", required = false) int size){
-        return employeeService.getEmployeesBy(page, size);
+        String status= "ACTIVE";
+        String jobTitle= "DEV";
+        return employeeService.getEmployeesBy(page, size, status, jobTitle);
     }
 }
 //Create a GET API to fetch employees having jobTitle 'DEV' that belong to ACTIVE company

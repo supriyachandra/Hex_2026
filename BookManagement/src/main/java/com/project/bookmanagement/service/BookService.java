@@ -4,6 +4,7 @@ import com.project.bookmanagement.dto.BookReqDto;
 import com.project.bookmanagement.dto.BookResDto;
 import com.project.bookmanagement.exception.ResourceNotFoundException;
 import com.project.bookmanagement.mapper.BookMapper;
+import com.project.bookmanagement.model.Author;
 import com.project.bookmanagement.model.Book;
 import com.project.bookmanagement.repository.BookRepository;
 import com.project.bookmanagement.repository.UserRepository;
@@ -23,10 +24,13 @@ import java.util.List;
 @Slf4j
 public class BookService {
     private final BookRepository bookRepository;
+    private final AuthorService authorService;
 
     public void addBook(BookReqDto bookReqDto) {
+        Author author= authorService.findById(bookReqDto.author_id());
         log.atLevel(Level.INFO).log("Called addBook");
         Book book= BookMapper.MapToEntity(bookReqDto);
+        book.setAuthorEntity(author);
         bookRepository.save(book);
 
         log.atLevel(Level.INFO).log("Book Added1");
@@ -73,5 +77,19 @@ public class BookService {
         bookRepository.deleteByISBN(isbn);
 
         log.atLevel(Level.INFO).log("Book deleted!");
+    }
+
+    public List<BookResDto> getAllBooksByAuthor(String username, int page, int size) {
+        // check author is valid
+        Author author= authorService.findByUsername(username);
+
+        Pageable pageable= PageRequest.of(page, size);
+
+        Page<Book> bookList= bookRepository.getBooksByAuthor(username, pageable);
+
+
+        return bookList.stream()
+                .map(BookMapper::mapToBookResDto)
+                .toList();
     }
 }

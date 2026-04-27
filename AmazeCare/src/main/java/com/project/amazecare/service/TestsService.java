@@ -17,17 +17,17 @@ public class TestsService {
     private final TestsRepository testsRepository;
     private final ConsultationService consultationService;
 
-    public void addTest(TestReqDto testReqDto) {
-        log.atLevel(Level.INFO).log("Called addTest: Add Tests by Consultation ID");
-
-        // validate Consultation ID
-        Consultation consultation= consultationService.findConsultById(testReqDto.consultation_id());
-
-        RecommendedTests test= TestsMapper.mapToEntity(testReqDto);
-        test.setConsultation(consultation);
-
-        testsRepository.save(test);
-
-        log.atLevel(Level.INFO).log("Tests added!");
-    }
+//    public void addTest(TestReqDto testReqDto) {
+//        log.atLevel(Level.INFO).log("Called addTest: Add Tests by Consultation ID");
+//
+//        // validate Consultation ID
+//        Consultation consultation= consultationService.findConsultById(testReqDto.consultation_id());
+//
+//        RecommendedTests test= TestsMapper.mapToEntity(testReqDto);
+//        test.setConsultation(consultation);
+//
+//        testsRepository.save(test);
+//
+//        log.atLevel(Level.INFO).log("Tests added!");
+//    }
 }

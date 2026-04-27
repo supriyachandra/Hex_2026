@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/executive")
+@CrossOrigin(origins = "http://localhost:5173/")
 public class ExecutiveController {
 
     private final ExecutiveService executiveService;

@@ -1,4 +1,10 @@
 package com.springboot.myapp.dto;
 
-public record PlanRespDto() {
+import java.math.BigDecimal;
+
+public record PlanRespDto(
+        String planName,
+        BigDecimal price,
+        int days
+) {
 }

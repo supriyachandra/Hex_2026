@@ -1,9 +1,10 @@
 package com.springboot.myapp.dto;
 
 import com.springboot.myapp.enums.TicketPriority;
+import com.springboot.myapp.enums.TicketStatus;
 
 public record FilterReqDto(
-        String priority,
-        String status
+        TicketPriority priority,
+        TicketStatus status
 ) {
 }

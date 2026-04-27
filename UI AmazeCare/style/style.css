@@ -1,0 +1,18 @@
+.widget_text{
+    text-align: center;
+    font-size: 1rem;
+    
+}
+
+.widget_number{
+    text-align: center;
+    color: darkblue;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.center_text{
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+}

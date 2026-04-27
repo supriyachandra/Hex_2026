@@ -1,5 +1,7 @@
 package com.project.amazecare.service;
 
+import com.project.amazecare.dto.DoctorPaginationDto;
+import com.project.amazecare.dto.DoctorReqDto;
 import com.project.amazecare.dto.DoctorRespDto;
 import com.project.amazecare.exception.ResourceNotFoundException;
 import com.project.amazecare.model.Doctor;
@@ -34,58 +36,35 @@ public class DoctorServiceTest {
     private DoctorRepository doctorRepository;
 
     @Test
-    public void getAllDoctorsTest(){
-        Specialization s= new Specialization();
+    public void getAllDoctorsPaginationTest() {
+
+        // specialization
+        Specialization s = new Specialization();
         s.setId(1L);
         s.setName("Cardiology");
-        // Prepare list of doctors
-        Doctor doctor1= new Doctor();
-        doctor1.setId(1L);
-        doctor1.setName("doctor1");
-        doctor1.setEmail("doctor@gmail.com");
-        doctor1.setPhone("1425371932");
-        doctor1.setQualification("XYZ");
-        doctor1.setSpecialization(s);
-        doctor1.setCreatedAt(Instant.now());
 
-        Doctor doctor2= new Doctor();
-        doctor2.setId(2L);
-        doctor2.setName("doctor2");
-        doctor2.setEmail("doctor2@gmail.com");
-        doctor2.setPhone("1425373932");
-        doctor2.setQualification("XYZ");
-        doctor2.setSpecialization(s);
-        doctor2.setCreatedAt(Instant.now());
+        // doctor
+        Doctor doctor = new Doctor();
+        doctor.setId(1L);
+        doctor.setName("doctor1");
+        doctor.setEmail("doc@gmail.com");
+        doctor.setSpecialization(s);
 
-        List<Doctor> list= List.of(doctor1, doctor2);
+        List<Doctor> list = List.of(doctor);
 
-        /*
-        // create page of doctor list
-        Page<Doctor> doctorPage= new PageImpl<>(list);
+        Page<Doctor> doctorPage = new PageImpl<>(list);
 
-        // define page and size for pageable
-        int page=0;
-        int size=2;
-        Pageable pageable1= PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(0, 1);
 
-        // so if pageable is 0,2 then doctor page list will be used
-        Mockito.when(doctorRepository.findAll(pageable1)).thenReturn(doctorPage);
+        Mockito.when(doctorRepository.findAll(pageable)).thenReturn(doctorPage);
 
-        Assertions.assertEquals(2, doctorService.getAllDoctors(page, size).size());
+        DoctorPaginationDto result = doctorService.getAllDoctors(0, 1);
 
-        */
-        // create page of doctor list
-        Page<Doctor> doctorPage= new PageImpl<>(list.subList(0,1));
+        Assertions.assertEquals(1, result.data().size());
+        Assertions.assertEquals(1, result.totalRecords());
+        Assertions.assertEquals(1, result.totalPages());
 
-        // define page and size for pageable
-        int page=0;
-        int size=1;
-        Pageable pageable2= PageRequest.of(page, size);
-
-        // so if pageable is 0,1 then doctor page list will be used
-        Mockito.when(doctorRepository.findAll(pageable2)).thenReturn(doctorPage);
-
-        Assertions.assertEquals(1, doctorService.getAllDoctors(page, size).size());
+        Mockito.verify(doctorRepository, Mockito.times(1)).findAll(pageable);
     }
 
     @Test
@@ -106,6 +85,7 @@ public class DoctorServiceTest {
 
         // response dto
         DoctorRespDto doctorRespDto1= new DoctorRespDto(
+                doctor.getId(),
                 doctor.getName(),
                 doctor.getExperience(),
                 doctor.getEmail(),
@@ -133,5 +113,57 @@ public class DoctorServiceTest {
 
         // check message equality
         Assertions.assertEquals("Invalid Doctor ID", e.getMessage());
+    }
+
+    @Test
+    public void filterDoctorBySpecializationIdTest() {
+
+        // specialization
+        Specialization s = new Specialization();
+        s.setId(1L);
+        s.setName("Cardiology");
+
+        // for doctor list
+        Doctor doctor = new Doctor();
+        doctor.setId(1L);
+        doctor.setName("doctor1");
+        doctor.setSpecialization(s);
+
+        List<Doctor> list = List.of(doctor);
+
+        Mockito.when(doctorRepository.filterDoctorBySpecializationId(1L))
+                .thenReturn(list);
+
+        List<DoctorReqDto> result =
+                doctorService.filterDoctorBySpecializationId(1L);
+
+        Assertions.assertEquals(1, result.size());
+
+        Mockito.verify(doctorRepository, Mockito.times(1))
+                .filterDoctorBySpecializationId(1L);
+    }
+
+    @Test
+    public void totalDoctorsTest(){
+        // specialization
+        Specialization s= new Specialization();
+        s.setId(1L);
+        s.setName("Cardiology");
+
+        Doctor doctor = new Doctor();
+        doctor.setId(1L);
+        doctor.setName("doctor1");
+        doctor.setSpecialization(s);
+        Doctor doctor2 = new Doctor();
+        doctor2.setId(2L);
+        doctor2.setName("doctor2");
+        doctor2.setSpecialization(s);
+
+        List<Doctor> list = List.of(doctor, doctor2);
+
+        Mockito.when(doctorRepository.totalDoctors())
+                .thenReturn((long) list.size());
+
+        Assertions.assertEquals(2, doctorService.totalDoctors());
     }
 }

@@ -1,4 +1,10 @@
 package com.springboot.myapp.dto;
 
-public record TicketByCustomerDto() {
+import java.util.List;
+
+public record TicketByCustomerDto(
+        List<TicketCustomerDto> data,
+        long totalRecords,
+        int totalPages
+) {
 }

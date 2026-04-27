@@ -1,4 +1,10 @@
 package com.project.amazecare.dto;
 
-public record PatientPaginationDto() {
+import java.util.List;
+
+public record PatientPaginationDto(
+        List<CreatePatientDto> data,
+        Long totalRecords,
+        int totalPages
+) {
 }

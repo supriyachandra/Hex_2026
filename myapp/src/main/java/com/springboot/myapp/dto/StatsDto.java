@@ -1,4 +1,9 @@
 package com.springboot.myapp.dto;
 
-public record StatsDto() {
+import com.springboot.myapp.enums.TicketStatus;
+
+public record StatsDto(
+        String status,
+        int count
+) {
 }

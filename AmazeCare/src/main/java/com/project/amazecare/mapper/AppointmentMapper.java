@@ -24,12 +24,14 @@ public class AppointmentMapper {
         return new AppointmentRespDto(
                 appointment.getId(),
                 appointment.getAppointmentDate(),
+                appointment.getTimeSlot(),
                 appointment.getPatient().getId(),
                 appointment.getPatient().getName(),
                 appointment.getDoctor().getId(),
                 appointment.getDoctor().getSpecialization().getName(),
                 appointment.getDoctor().getName(),
-                appointment.getAppointmentStatus()
+                appointment.getAppointmentStatus(),
+                appointment.getSymptoms()
         );
     }
 

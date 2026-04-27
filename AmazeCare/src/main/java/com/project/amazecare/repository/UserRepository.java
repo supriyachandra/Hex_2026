@@ -13,4 +13,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select s from Specialization s")
     List<Specialization> getAll();
+
+    @Query("select u from User u where u.username=?1")
+    User getRole(String username);
 }

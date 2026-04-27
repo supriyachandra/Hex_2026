@@ -3,6 +3,7 @@ import App from './App.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { UserList } from './components/user-list.jsx'
 import { AddUser } from './components/add-user.jsx'
+import { PaginationList } from './components/pagination-list.jsx'
 
 const routes = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ const routes = createBrowserRouter([
   {
     path: "/add-user",
     element: <AddUser/>
+  },
+  {
+    path: "/pagination-list",
+    element: <PaginationList/>
   }
 ])
 

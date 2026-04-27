@@ -1,5 +1,6 @@
 package com.project.amazecare.service;
 
+import com.project.amazecare.dto.UserDetailsDto;
 import com.project.amazecare.model.User;
 import com.project.amazecare.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -22,5 +23,13 @@ public class UserService implements UserDetailsService {
 
     public User saveUser(User user) {
         return userRepository.save(user);
+    }
+
+    public UserDetailsDto userRole(String username) {
+        User user= userRepository.getRole(username);
+        return new UserDetailsDto(
+                user.getUsername(),
+                user.getRole()
+        );
     }
 }

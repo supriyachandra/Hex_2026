@@ -1,4 +1,6 @@
 package com.project.bookmanagement.enums;
 
-public class Status {
+public enum Status {
+    ACTIVE,
+    IN_ACTIVE
 }

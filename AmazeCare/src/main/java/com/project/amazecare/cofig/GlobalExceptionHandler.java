@@ -103,4 +103,13 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(map);
     }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<Map<String, Object>> handleRuntimeException(RuntimeException e){
+        Map<String, Object> map= new HashMap<>();
+
+        map.put("message",e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
+    }
 }

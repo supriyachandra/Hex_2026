@@ -17,6 +17,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/appointment")
+@CrossOrigin(origins = "http://localhost:5173/")
 public class AppointmentController {
 
     private final AppointmentService appointmentService;
@@ -24,7 +25,7 @@ public class AppointmentController {
 
     // Access: PATIENT
     @PostMapping("/book/{doctor_id}")
-    public ResponseEntity<?> bookAppointment(@Valid @RequestBody AppointmentDto appointmentDto,
+    public ResponseEntity<HttpStatus> bookAppointment(@Valid @RequestBody AppointmentDto appointmentDto,
                                              @PathVariable long doctor_id,
                                              Principal principal){
         return appointmentService.bookAppointment(appointmentDto, principal.getName(), doctor_id);
@@ -32,7 +33,7 @@ public class AppointmentController {
 
     // Book Appointment--- By admin (add in securityconfig)
     @PostMapping("book/{doctor_id}/{patient_id}")
-    public ResponseEntity<?> bookPatientAppointment(@Valid @RequestBody AppointmentDto appointmentDto,
+    public ResponseEntity<HttpStatus> bookPatientAppointment(@Valid @RequestBody AppointmentDto appointmentDto,
                                                     @PathVariable long doctor_id,
                                                     @PathVariable long patient_id){
         appointmentService.bookPatientAppointment(appointmentDto, doctor_id, patient_id);
@@ -41,7 +42,7 @@ public class AppointmentController {
 
     // edit Appointment status -- doctor clicks confirm button
     @PutMapping("/confirm/{appointment_id}")
-    public ResponseEntity<?> confirmAppointment(@PathVariable long appointment_id,
+    public ResponseEntity<HttpStatus> confirmAppointment(@PathVariable long appointment_id,
                                                 Principal principal){
         appointmentService.confirmAppointment(appointment_id, principal);
         return ResponseEntity.status(HttpStatus.OK).build();
@@ -49,7 +50,7 @@ public class AppointmentController {
 
     // edit Appointment status -- doctor clicks reject button
     @PutMapping("/reject/{appointment_id}")
-    public ResponseEntity<?> rejectAppointment(@PathVariable long appointment_id,
+    public ResponseEntity<HttpStatus> rejectAppointment(@PathVariable long appointment_id,
                                                Principal principal){
         appointmentService.rejectAppointment(appointment_id, principal);
         return ResponseEntity.status(HttpStatus.OK).build();
@@ -57,7 +58,7 @@ public class AppointmentController {
 
     // patient can reschedule appointment--- access: patient
     @PutMapping("/reschedule/{appointment_id}")
-    public ResponseEntity<?> rescheduleAppointment(@PathVariable long appointment_id,
+    public ResponseEntity<HttpStatus> rescheduleAppointment(@PathVariable long appointment_id,
                                                    Principal principal,
                                                    @RequestBody RescheduleDto rescheduleDto){
         appointmentService.rescheduleAppointment(appointment_id, principal, rescheduleDto);
@@ -66,17 +67,18 @@ public class AppointmentController {
 
     // cancel appointmnet- patient
     @PutMapping("/cancel/{appointment_id}")
-    public ResponseEntity<?> cancelAppointment(@PathVariable long appointment_id,
+    public ResponseEntity<HttpStatus> cancelAppointment(@PathVariable long appointment_id,
                                                Principal principal){
         appointmentService.cancelAppointment(appointment_id, principal.getName());
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    // view appointments- for admin
-    //(app_id, app_date, patient_id, patient name, doctor_id, doctor_specialization,  doctor_name, status)
-    @GetMapping("/get-all/v1")
-    public List<AppointmentRespDto> viewAppointments(){
-        return appointmentService.viewAppointments();
+
+    @GetMapping("/get/patient")
+    public AppResPaginationDto getAppointments(Principal principal,
+                                               @RequestParam(name = "page", defaultValue = "0", required = false) int page,
+                                               @RequestParam(name = "size", defaultValue = "5", required = false) int size){
+        return appointmentService.getAppointments(principal.getName(), page, size);
     }
 
 
@@ -88,5 +90,39 @@ public class AppointmentController {
             @RequestBody FilterAppointmentDto filterAppointmentDto,
             Principal principal){
         return appointmentService.getAppointmentsWithFilter(filterAppointmentDto, principal.getName());
+    }
+
+    // patient
+    @GetMapping("/upcoming")
+    public List<AppointmentRespDto> getUpcomingAppointments(Principal principal){
+        return appointmentService.getUpcomingAppointments(principal.getName());
+    }
+
+    @GetMapping("/upcoming/pending")
+    public List<AppointmentRespDto> pendingApps(Principal principal){
+        return appointmentService.pendingApps(principal.getName());
+    }
+
+    @GetMapping("/today/confirm")
+    public List<AppointmentRespDto> todayConfirm(Principal principal){
+        String confirm= "CONFIRMED";
+        return appointmentService.todayConfirm(principal.getName(), confirm);
+    }
+
+    // doctor
+    @GetMapping("/doc/upcoming")
+    public List<AppointmentRespDto> docUpcoming(Principal principal){
+        return appointmentService.docUpcoming(principal.getName());
+    }
+
+    @GetMapping("/get-all")
+    public AppResPaginationDto getAll(@RequestParam(name = "page", defaultValue = "0", required = false) int page,
+                                      @RequestParam(name = "size", defaultValue = "5", required = false) int size){
+        return appointmentService.getAll(page, size);
+    }
+
+    @GetMapping("/all-today")
+    public List<AppointmentRespDto> allToday(){
+        return appointmentService.allToday();
     }
 }

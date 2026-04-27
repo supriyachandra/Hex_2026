@@ -1,5 +1,6 @@
 package com.springboot.myapp.controller;
 
+import com.springboot.myapp.dto.ActivePlanDto;
 import com.springboot.myapp.dto.CustomerByPlanDto;
 import com.springboot.myapp.dto.CustomerPlanReqDto;
 import com.springboot.myapp.service.CustomerPlanService;
@@ -14,6 +15,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/customer/plan")
+@CrossOrigin(origins = "http://localhost:5173/")
 public class CustomerPlanController {
 
     private final CustomerPlanService customerPlanService;
@@ -43,5 +45,10 @@ public class CustomerPlanController {
     @GetMapping("/get-customers/{planId}")
     public List<CustomerByPlanDto> getCustomersByPlan(@PathVariable long planId){
         return customerPlanService.getCustomersByPlan(planId);
+    }
+
+    @GetMapping("/active-plan")
+    public List<ActivePlanDto> getActivePlan(Principal principal){
+        return customerPlanService.getActivePlan(principal.getName());
     }
 }

@@ -1,6 +1,8 @@
 package com.project.amazecare.service;
 
 import com.project.amazecare.dto.AdmissionReqDto;
+import com.project.amazecare.dto.AdmissionsPagination;
+import com.project.amazecare.dto.AdmitRespDto;
 import com.project.amazecare.enums.AdmissionStatus;
 import com.project.amazecare.enums.PatientType;
 import com.project.amazecare.exception.PatientAlreadyExistsException;
@@ -15,10 +17,15 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.event.Level;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -40,11 +47,11 @@ public class AdmissionService {
         if(admissionRepository.patientAlreadyAdmitted(patient.getId())>0){
             throw new PatientAlreadyExistsException("Patient already admitted");
         }
-        patient.setPatientType(PatientType.IPD);
         patientService.savePatient(patient);
 
         admission.setDoctor(doctor);
         admission.setPatient(patient);
+        //admission.setPatientType(PatientType.IPD);
         admission.setAdmissionDate(LocalDate.now());
         admission.setStatus(AdmissionStatus.ADMITTED);
 
@@ -66,5 +73,91 @@ public class AdmissionService {
                 .orElseThrow(()-> new ResourceNotFoundException("Admission ID invalid!"));
         // using jpql
         admissionRepository.dischargePatient(admissionId);
+    }
+
+
+    public AdmissionsPagination getAllActive(int page, int size) {
+        Pageable pageable= PageRequest.of(page, size);
+        Page<Admission> admissionPage= admissionRepository.getAllActive(pageable);
+
+        List<AdmitRespDto> admitRespDtos= admissionPage
+                .stream()
+                .map(AdmissionMapper:: mapToRespDto)
+                .toList();
+
+        long records= admissionPage.getTotalElements();
+        int pages= admissionPage.getTotalPages();
+
+        return new AdmissionsPagination(
+                admitRespDtos,
+                records,
+                pages
+        );
+    }
+
+    public void requestDischarge(long admissionId) {
+        admissionRepository.requestDischarge(admissionId);
+    }
+
+    public AdmissionsPagination getAllPast(int page, int size) {
+        Pageable pageable= PageRequest.of(page, size);
+        Page<Admission> admissionPage= admissionRepository.getAllPast(pageable);
+
+        List<AdmitRespDto> admitRespDtos= admissionPage
+                .stream()
+                .map(AdmissionMapper:: mapToRespDto)
+                .toList();
+
+        long records= admissionPage.getTotalElements();
+        int pages= admissionPage.getTotalPages();
+
+        return new AdmissionsPagination(
+                admitRespDtos,
+                records,
+                pages
+        );
+    }
+
+    public AdmissionsPagination getAllPastDoc(int page, int size, String username) {
+        Pageable pageable= PageRequest.of(page, size);
+        AdmissionStatus status= AdmissionStatus.valueOf("DISCHARGED");
+        Page<Admission> admissionPage= admissionRepository.getAllPastDoc(pageable, username, status);
+
+        List<AdmitRespDto> admitRespDtos= admissionPage
+                .stream()
+                .map(AdmissionMapper:: mapToRespDto)
+                .toList();
+
+        long records= admissionPage.getTotalElements();
+        int pages= admissionPage.getTotalPages();
+
+        return new AdmissionsPagination(
+                admitRespDtos,
+                records,
+                pages
+        );
+    }
+
+    public AdmissionsPagination getAllActiveDoc(int page, int size, String username) {
+        Pageable pageable= PageRequest.of(page, size);
+        Page<Admission> admissionPage= admissionRepository.getAllActiveDoc(pageable, username);
+
+        List<AdmitRespDto> admitRespDtos= admissionPage
+                .stream()
+                .map(AdmissionMapper:: mapToRespDto)
+                .toList();
+
+        long records= admissionPage.getTotalElements();
+        int pages= admissionPage.getTotalPages();
+
+        return new AdmissionsPagination(
+                admitRespDtos,
+                records,
+                pages
+        );
+    }
+
+    public Long currentlyAdmittedCount() {
+        return admissionRepository.countCurrentlyAdmitted();
     }
 }

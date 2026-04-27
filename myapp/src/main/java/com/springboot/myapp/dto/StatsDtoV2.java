@@ -1,4 +1,9 @@
 package com.springboot.myapp.dto;
 
-public record StatsDtoV2() {
+import com.springboot.myapp.enums.TicketStatus;
+
+public record StatsDtoV2(
+        TicketStatus status,
+        Long count
+) {
 }

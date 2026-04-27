@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -51,6 +52,14 @@ public class BookController {
     public ResponseEntity<?> deleteByISBN(@RequestParam String ISBN){
         bookService.deleteBookByISBN(ISBN);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    // get list of bookrespdto by author id
+    @GetMapping("/get-all/author")
+    public List<BookResDto> getBooksByAuthor(Principal principal,
+                                             @RequestParam(value = "page", defaultValue = "0", required = false) int page,
+                                             @RequestParam(value = "size", defaultValue = "5", required = false) int size){
+        return bookService.getAllBooksByAuthor(principal.getName(), page, size);
     }
 
 }

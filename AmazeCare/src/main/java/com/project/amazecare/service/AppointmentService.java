@@ -13,10 +13,12 @@ import com.project.amazecare.repository.AppointmentRepository;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.security.Principal;
 import java.util.List;
 
@@ -29,7 +31,9 @@ public class AppointmentService {
     private final PatientService patientService;
     private final DoctorService doctorService;
 
-    public ResponseEntity<?> bookAppointment(AppointmentDto appointmentDto, String username, long doctor_id) {
+    private String invalidAppointmentMsg= "Invalid Appointment ID";
+
+    public ResponseEntity<HttpStatus> bookAppointment(AppointmentDto appointmentDto, String username, long doctor_id) {
         // Map to Appointment
         Appointment appointment= AppointmentMapper.mapTo(appointmentDto);
 
@@ -43,6 +47,7 @@ public class AppointmentService {
 
         //save to DB
         appointment.setDoctor(doctor);
+        //appointment.setPatientType(PatientType.OPD);
         appointment.setPatient(patient);
 
         appointmentRepository.save(appointment);
@@ -52,7 +57,7 @@ public class AppointmentService {
 
     public void confirmAppointment(long appointmentId, Principal principal) {
         Appointment appointment= appointmentRepository.findById(appointmentId).
-                orElseThrow(() -> new ResourceNotFoundException("Invalid Appointment ID"));
+                orElseThrow(() -> new ResourceNotFoundException(invalidAppointmentMsg));
 
         // ownership check
         if(!appointment.getDoctor().getUser().getUsername().equals(principal.getName())){
@@ -64,21 +69,13 @@ public class AppointmentService {
 
     public void rejectAppointment(long appointmentId, Principal principal) {
         Appointment appointment= appointmentRepository.findById(appointmentId).
-                orElseThrow(() -> new ResourceNotFoundException("Invalid Appointment ID"));
+                orElseThrow(() -> new ResourceNotFoundException(invalidAppointmentMsg));
         // ownership check
         if(!appointment.getDoctor().getUser().getUsername().equals(principal.getName())){
             throw new AppointmentStatusUpdateException("Doctor cannot update status of this appointment");
         }
         appointment.setAppointmentStatus(AppointmentStatus.CANCELLED);
         appointmentRepository.save(appointment);
-    }
-
-    public List<AppointmentRespDto> viewAppointments() {
-        //(app_id, app_date, patient_id, patient name, doctor_id, doctor_specialization,  doctor_name, status)
-        List<Appointment> appointmentList= appointmentRepository.viewAppointments();
-        return appointmentList.stream()
-                .map(AppointmentMapper :: mapToDto)
-                .toList();
     }
 
     public void rescheduleAppointment(long appointmentId, Principal principal, RescheduleDto rescheduleDto) {
@@ -100,7 +97,7 @@ public class AppointmentService {
         // Update
         appointment.setAppointmentDate(rescheduleDto.date());
         appointment.setTimeSlot(rescheduleDto.time());
-        appointment.setAppointmentStatus(AppointmentStatus.PENDING);
+        //appointment.setAppointmentStatus(AppointmentStatus.PENDING);
 
         appointmentRepository.save(appointment);
 
@@ -108,7 +105,7 @@ public class AppointmentService {
 
     public Appointment getById(long appointment_id) {
         return appointmentRepository.findById(appointment_id)
-                .orElseThrow(()-> new ResourceNotFoundException("Invalid Appointment ID"));
+                .orElseThrow(()-> new ResourceNotFoundException(invalidAppointmentMsg));
     }
 
     public void saveAppointment(Appointment appointment) {
@@ -118,7 +115,7 @@ public class AppointmentService {
     public void cancelAppointment(long appointmentId, String username) {
         // get appointment by id
         Appointment appointment= appointmentRepository.findById(appointmentId)
-                .orElseThrow(()-> new ResourceNotFoundException("Appointment ID Invalid"));
+                .orElseThrow(()-> new ResourceNotFoundException(invalidAppointmentMsg));
 
         // Ownership check
         if (!appointment.getPatient().getUser().getUsername().equals(username)) {
@@ -168,5 +165,89 @@ public class AppointmentService {
         return list.stream()
                 .map(AppointmentMapper::mapToPatientAppointmentDto)
                 .toList();
+    }
+
+    public List<AppointmentRespDto> getUpcomingAppointments(String username) {
+        List<Appointment> appointmentList= appointmentRepository.getUpcomingAppointments(username);
+        return appointmentList.stream()
+                .map(AppointmentMapper :: mapToDto)
+                .toList();
+    }
+
+    public AppResPaginationDto getAppointments(String username, int page, int size) {
+        Pageable pageable= PageRequest.of(page, size);
+        Page<Appointment> appointmentPage=
+                appointmentRepository.getAppointments(username, pageable);
+
+        List<AppointmentRespDto> list= appointmentPage.stream()
+                .map(AppointmentMapper ::mapToDto)
+                .toList();
+
+        long records= appointmentPage.getTotalElements();
+        int pages= appointmentPage.getTotalPages();
+
+        return new AppResPaginationDto(
+                list,
+                records,
+                pages
+        );
+    }
+
+    public List<AppointmentRespDto> pendingApps(String doctor_username) {
+        List<Appointment> appointmentList=
+                appointmentRepository.getUpcomingAppointmentsDoctor(doctor_username);
+
+        return appointmentList.stream()
+                .filter(appointment ->
+                        appointment.getAppointmentStatus().equals(AppointmentStatus.PENDING))
+                .map(AppointmentMapper:: mapToDto)
+                .toList();
+    }
+
+    public List<AppointmentRespDto> todayConfirm(String d_username, String confirm) {
+        AppointmentStatus status= AppointmentStatus.valueOf(confirm);
+        List<Appointment> appointmentList=
+                appointmentRepository.todayConfirm(d_username, status);
+
+        return appointmentList.stream()
+                .map(AppointmentMapper:: mapToDto)
+                .toList();
+    }
+
+    public List<AppointmentRespDto> docUpcoming(String doctorUsername) {
+        List<Appointment> list= appointmentRepository.getUpcomingAppointmentsDoctor(doctorUsername);
+
+        return list.stream()
+                .map(AppointmentMapper::mapToDto)
+                .toList();
+    }
+
+    public void cancelApp(Long id, String username) {
+        AppointmentStatus status= AppointmentStatus.valueOf("CANCELLED");
+        appointmentRepository.cancelApp(id, username, status);
+    }
+
+
+    public AppResPaginationDto getAll(int page, int size) {
+        Pageable pageable= PageRequest.of(page, size);
+        Page<Appointment> appointmentPage=
+                appointmentRepository.getAllUpcoming(pageable);
+
+        List<AppointmentRespDto> list= appointmentPage.stream()
+                .map(AppointmentMapper ::mapToDto)
+                .toList();
+
+        long records= appointmentPage.getTotalElements();
+        int pages= appointmentPage.getTotalPages();
+
+        return new AppResPaginationDto(
+                list,
+                records,
+                pages
+        );
+    }
+
+    public List<AppointmentRespDto> allToday() {
+        return appointmentRepository.allToday();
     }
 }

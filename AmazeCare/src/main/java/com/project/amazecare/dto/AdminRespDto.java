@@ -1,4 +1,7 @@
 package com.project.amazecare.dto;
 
-public record AdminRespDto() {
+public record AdminRespDto(
+        Long id,
+        String name
+) {
 }

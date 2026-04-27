@@ -8,4 +8,10 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface PatientRepository extends JpaRepository<Patient, Long> {
+
+    @Query("select p from Patient p where p.user.username=?1")
+    Patient getPatient(String username);
+
+    @Query("select count(p.id) from Patient p")
+    Long totalPatients();
 }

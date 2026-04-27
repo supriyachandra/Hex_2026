@@ -1,4 +1,7 @@
 package com.springboot.myapp.repository;
 
-public interface DocumentRepository {
+import com.springboot.myapp.model.Document;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface DocumentRepository extends JpaRepository<Document, Long> {
 }

@@ -1,4 +1,9 @@
 package com.project.amazecare.dto;
 
-public record UserDetailsDto() {
+import com.project.amazecare.enums.Role;
+
+public record UserDetailsDto(
+        String username,
+        Role role
+) {
 }

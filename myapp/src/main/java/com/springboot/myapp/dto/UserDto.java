@@ -1,4 +1,9 @@
 package com.springboot.myapp.dto;
 
-public record UserDto() {
+import com.springboot.myapp.enums.Role;
+
+public record UserDto(
+        String username,
+        Role role
+) {
 }

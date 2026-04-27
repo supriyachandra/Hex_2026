@@ -1,7 +1,9 @@
 package com.springboot.myapp.service;
 
+import com.springboot.myapp.dto.ActivePlanDto;
 import com.springboot.myapp.dto.CustomerByPlanDto;
 import com.springboot.myapp.dto.CustomerPlanReqDto;
+import com.springboot.myapp.mapper.CustomerPlanMapper;
 import com.springboot.myapp.model.Customer;
 import com.springboot.myapp.model.CustomerPlan;
 import com.springboot.myapp.model.Plan;
@@ -76,5 +78,12 @@ public class CustomerPlanService {
 
         // save
         customerPlanRepository.save(customerPlan);
+    }
+
+    public List<ActivePlanDto> getActivePlan(String username) {
+        List<CustomerPlan> customerPlanList= customerPlanRepository.getActivePlans(username);
+        return customerPlanList.stream()
+                .map(CustomerPlanMapper :: mapToActiveDto)
+                .toList();
     }
 }
