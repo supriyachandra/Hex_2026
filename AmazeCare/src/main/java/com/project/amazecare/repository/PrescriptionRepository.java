@@ -17,10 +17,5 @@ public interface PrescriptionRepository extends JpaRepository<Prescription, Long
             """)
     List<TimeSlotsDto> getTimeSlots(long doctorId, LocalDate date);
 
-    @Query("""
-    select COUNT(p.id) from Prescription p
-    where (p.consultation.appointment.patient.user.username = ?1) OR
-    (p.consultation.admission.patient.user.username = ?1)
-""")
-    int countByUsername(String username);
+
 }

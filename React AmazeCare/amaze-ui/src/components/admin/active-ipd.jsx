@@ -9,7 +9,7 @@ export function ActiveAdmissions() {
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
 
-    const size = 10;
+    const size = 5;
 
     const fetchAdmissions = async (page = 0) => {
         try {

@@ -18,7 +18,7 @@ export function OpdConsultations() {
                 params: {
                     page,
                     size,
-                    type: "OPD"   // ✅ FIXED
+                    type: "OPD"   
                 },
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("token")

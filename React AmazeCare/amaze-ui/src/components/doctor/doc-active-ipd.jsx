@@ -16,7 +16,6 @@ export function ActiveIpdPatients() {
 
     const size = 10;
 
-    // 🔁 fetch admissions
     const fetchAdmissions = async (page = 0) => {
         try {
             const res = await axios.get(api, {
@@ -39,14 +38,13 @@ export function ActiveIpdPatients() {
         fetchAdmissions(0);
     }, []);
 
-    // 🔴 REQUEST DISCHARGE
     const handleRequest = async (id) => {
 
         const confirmAction = window.confirm("Request discharge?");
         if (!confirmAction) return;
 
         try {
-            await axios.post(`${requestApi}/${id}`, {}, {
+            await axios.put(`${requestApi}/${id}`, {}, {
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("token")
                 }
@@ -61,7 +59,7 @@ export function ActiveIpdPatients() {
     };
 
     // =========================
-    // 🟢 CONSULTATION MODAL
+    //  CONSULTATION MODAL
     // =========================
 
     const [showModal, setShowModal] = useState(false);
@@ -102,7 +100,7 @@ export function ActiveIpdPatients() {
                 diagnosis,
                 treatmentPlan,
                 symptomNotes,
-                admission_id: admissionId, // ✅ KEY CHANGE
+                admission_id: admissionId,
                 prescriptions,
                 tests
             }, {
@@ -123,8 +121,18 @@ export function ActiveIpdPatients() {
         setPrescriptions([...prescriptions, { medicine_name: "", dosage: "" }]);
     };
 
+    const removePrescription = (index) => {
+        const list = prescriptions.filter((_, i) => i !== index);
+        setPrescriptions(list);
+    };
+
     const addTest = () => {
         setTests([...tests, { test_name: "" }]);
+    };
+
+    const removeTest = (index) => {
+        const list = tests.filter((_, i) => i !== index);
+        setTests(list);
     };
 
     const handlePrescriptionChange = (i, field, value) => {
@@ -180,19 +188,21 @@ export function ActiveIpdPatients() {
 
                             <td className="text-end">
 
-                                {/* CONSULT */}
-                                <button
-                                    className="btn btn-outline-primary btn-sm me-2"
-                                    onClick={() => {
-                                        setShowModal(true);
-                                        setAdmissionId(a.reference_id);
-                                    }}
-                                >
-                                    Add Consultation
-                                </button>
+                                {/* CONSULT - only when admitted */}
+                                {a.admission_status === "ADMITTED" && (
+                                    <button
+                                        className="btn btn-outline-primary btn-sm me-2"
+                                        onClick={() => {
+                                            setShowModal(true);
+                                            setAdmissionId(a.reference_id);
+                                        }}
+                                    >
+                                        Add Consultation
+                                    </button>
+                                )}
 
                                 {/* DISCHARGE */}
-                                {a.admission_status === "ACTIVE" && (
+                                {a.admission_status === "ADMITTED" && (
                                     <button
                                         className="btn btn-outline-danger btn-sm"
                                         onClick={() => handleRequest(a.reference_id)}
@@ -278,7 +288,7 @@ export function ActiveIpdPatients() {
 
                                         {prescriptions.map((p, i) => (
                                             <div className="row mb-2" key={i}>
-                                                <div className="col-md-6">
+                                                <div className="col-md-5">
                                                     <input className="form-control"
                                                         placeholder="Medicine"
                                                         value={p.medicine_name}
@@ -287,7 +297,7 @@ export function ActiveIpdPatients() {
                                                         }
                                                     />
                                                 </div>
-                                                <div className="col-md-6">
+                                                <div className="col-md-5">
                                                     <input className="form-control"
                                                         placeholder="Dosage"
                                                         value={p.dosage}
@@ -295,6 +305,13 @@ export function ActiveIpdPatients() {
                                                             handlePrescriptionChange(i, "dosage", e.target.value)
                                                         }
                                                     />
+                                                </div>
+                                                <div className="col-md-2">
+                                                    <button type="button"
+                                                        className="btn btn-outline-danger btn-sm w-100"
+                                                        onClick={() => removePrescription(i)}>
+                                                        ✕
+                                                    </button>
                                                 </div>
                                             </div>
                                         ))}
@@ -306,14 +323,25 @@ export function ActiveIpdPatients() {
                                         </button>
 
                                         {tests.map((t, i) => (
-                                            <input key={i}
-                                                className="form-control mb-2"
-                                                placeholder="Test"
-                                                value={t.test_name}
-                                                onChange={(e) =>
-                                                    handleTestChange(i, e.target.value)
-                                                }
-                                            />
+                                            <div className="row mb-2" key={i}>
+                                                <div className="col-md-10">
+                                                    <input
+                                                        className="form-control"
+                                                        placeholder="Test"
+                                                        value={t.test_name}
+                                                        onChange={(e) =>
+                                                            handleTestChange(i, e.target.value)
+                                                        }
+                                                    />
+                                                </div>
+                                                <div className="col-md-2">
+                                                    <button type="button"
+                                                        className="btn btn-outline-danger btn-sm w-100"
+                                                        onClick={() => removeTest(i)}>
+                                                        ✕
+                                                    </button>
+                                                </div>
+                                            </div>
                                         ))}
 
                                     </div>

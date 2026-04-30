@@ -1,20 +1,16 @@
 package com.project.amazecare.controller;
 
 import com.project.amazecare.dto.*;
-import com.project.amazecare.model.Consultation;
-import com.project.amazecare.model.Patient;
 import com.project.amazecare.service.ConsultationService;
 import com.project.amazecare.service.PatientService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -66,10 +62,6 @@ public class PatientController {
         return consultationService.getMedicalRecord(principal.getName());
     }
 
-    @GetMapping("/stats")
-    public List<PatientStatDto> getStats(Principal principal){
-        return patientService.getStats(principal.getName());
-    }
 
     @GetMapping("/all")
     public List<PatientRespDto> All(){

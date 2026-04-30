@@ -31,6 +31,7 @@ export function ManageDoctorSchedule() {
                         onSelect={(doc) => setSelectedDoctor(doc)}
                     />
 
+
                     {/*  ONLY SHOW WHEN DOCTOR SELECTED */}
                     {selectedDoctor && (
                         <>

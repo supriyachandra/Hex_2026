@@ -69,7 +69,6 @@ export function CheckAppointments() {
     const [showModal, setShowModal] = useState(false)
 
 
-
     // Add consultation
     const consultApi = "http://localhost:8080/api/consultation/add"
     const [examination, setExamination] = useState("")

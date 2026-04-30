@@ -53,9 +53,9 @@ export function IpdConsultations() {
                 onChange={(e) => setSearch(e.target.value)}
             />
 
-            {filtered.map((record) => (
+            {filtered.map((record, index) => (
                 <div className="card p-3 mb-3 shadow-sm border-start border-4 border-primary"
-                     key={record.reference_id}>
+                     key={index}>
 
                     {/* HEADER */}
                     <div className="d-flex justify-content-between mb-2">

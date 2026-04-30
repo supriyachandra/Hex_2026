@@ -67,7 +67,7 @@ public class SecurityConfig {
                         .hasAuthority(ADMIN)
                         
                         .requestMatchers(HttpMethod.GET, "/api/schedule/slots/{doctorId}/{date}")
-                        .hasAuthority(ADMIN)
+                        .hasAnyAuthority(ADMIN, PATIENT)
 
                         .requestMatchers(HttpMethod.GET,"/api/patient/get/{id}")
                         .hasAuthority(DOCTOR)
@@ -216,14 +216,4 @@ public class SecurityConfig {
         http.httpBasic(Customizer.withDefaults());  //--- using basic auth
         return http.build();
     }
-
-//    @Bean
-//    public AuthenticationManager authenticationManager(
-//            UserDetailsService userDetailsService,
-//            PasswordEncoder passwordEncoder
-//    ){
-//        DaoAuthenticationProvider daoAuthenticationProvider= new DaoAuthenticationProvider(userDetailsService);
-//        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-//        return new ProviderManager(daoAuthenticationProvider);
-//    }
 }

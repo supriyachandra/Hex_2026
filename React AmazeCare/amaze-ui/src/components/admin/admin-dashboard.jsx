@@ -16,7 +16,7 @@ function AdminDashboard() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    // Redux state (ONLY appointments)
+    // Redux state (for appointments)
     const { appointments } = useSelector(
         state => state.appointmentReducer
     );
@@ -29,7 +29,7 @@ function AdminDashboard() {
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("token")
                 }
-            };
+            }
 
             try {
                 const response = await axios.get(getAdminApi, config);

@@ -32,11 +32,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     """)
     List<Appointment> getAppointmentsWithFilter(AppointmentStatus status, String name, LocalDate date, long doctorId);
 
-    @Query("""
-    select count(a.id) from Appointment a where a.patient.user.username=?1
-    and a.appointmentDate >= current_date
-    """)
-    int countUpcomingByUsername(String username);
 
     @Query("""
         select a from Appointment a where a.patient.user.username=?1

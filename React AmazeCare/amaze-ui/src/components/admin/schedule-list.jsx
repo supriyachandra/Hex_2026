@@ -34,6 +34,8 @@ export default function ScheduleList({ doctorId, refresh }) {
                 }
             }
             );
+            
+            // get schedules again after deleting.
             fetchSchedules();
         } catch (err) {
             console.log(err);

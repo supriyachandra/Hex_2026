@@ -25,18 +25,6 @@ public interface ConsultationRepository extends JpaRepository<Consultation, Long
     """)
     List<Consultation> getAllByUsername(String username);
 
-    @Query("""
-    select count(c) from Consultation c
-    left join c.appointment a
-    left join a.patient ap
-    left join ap.user au
-    left join c.admission ad
-    left join ad.patient dp
-    left join dp.user du
-    where (au.username = ?1)
-    or (du.username = ?1)
-    """)
-    int countVisitsByUsername(String username);
 
     @Query("""
 select c from Consultation c
@@ -47,10 +35,7 @@ where du.username = ?1
 and c.appointment is null
 order by ad.admissionDate desc
 """)
-    Page<Consultation> getIpdConsults(
-            String username,
-            Pageable pageable
-    );
+    Page<Consultation> getIpdConsults(String username,Pageable pageable);
 
     @Query("""
 select c from Consultation c
@@ -61,10 +46,7 @@ where au.username = ?1
 and c.admission is null
 order by a.appointmentDate desc
 """)
-    Page<Consultation> getOpdConsults(
-            String username,
-            Pageable pageable
-    );
+    Page<Consultation> getOpdConsults(String username,Pageable pageable);
 
     @Query("""
     select c from Consultation c where c.appointment.id=?1

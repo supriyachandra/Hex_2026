@@ -6,7 +6,6 @@ import com.project.amazecare.dto.TimeSlotDto;
 import com.project.amazecare.dto.TimeSlotsDto;
 import com.project.amazecare.service.DoctorScheduleService;
 import lombok.AllArgsConstructor;
-import org.hibernate.grammars.hql.HqlParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

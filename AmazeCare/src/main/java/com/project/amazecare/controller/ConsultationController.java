@@ -1,10 +1,8 @@
 package com.project.amazecare.controller;
 
 import com.project.amazecare.dto.ConsultReqDto;
-import com.project.amazecare.dto.ConsultationDto;
 import com.project.amazecare.dto.MedicalRecordDto;
 import com.project.amazecare.dto.MedicalRecordPagination;
-import com.project.amazecare.enums.PatientType;
 import com.project.amazecare.service.ConsultationService;
 import com.project.amazecare.service.PatientService;
 import lombok.AllArgsConstructor;

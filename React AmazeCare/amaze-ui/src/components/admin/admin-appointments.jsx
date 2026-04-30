@@ -11,7 +11,7 @@ export function AdminAppointments() {
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
 
-    const size = 10;
+    const size = 5;
 
     //  FETCH APPOINTMENTS
     const fetchAppointments = async (page = 0) => {
@@ -36,7 +36,7 @@ export function AdminAppointments() {
         fetchAppointments(0);
     }, []);
 
-    // 🎨 STATUS BADGE
+    //  STATUS BADGE
     const getStatusBadge = (status) => {
         if (status === "PENDING") return "badge bg-warning text-dark";
         if (status === "CONFIRMED") return "badge bg-primary";
@@ -46,7 +46,7 @@ export function AdminAppointments() {
     };
 
     return (
-        <div className="container-fluid">
+        <div className="container-fluid p-4">
             <div className="row">
 
                 {/* SIDEBAR */}

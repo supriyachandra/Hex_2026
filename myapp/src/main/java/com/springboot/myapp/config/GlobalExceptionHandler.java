@@ -48,7 +48,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
     }
 
-
     @ExceptionHandler(AccessNotAllowedException.class)
     public ResponseEntity<?> handleAccessNotAllowedException(AccessNotAllowedException e){
         Map<String, Object> map= new HashMap<>();

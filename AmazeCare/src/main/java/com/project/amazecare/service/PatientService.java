@@ -98,18 +98,6 @@ public class PatientService {
         return PatientMapper.mapToRespDto(patient);
     }
 
-    public List<PatientStatDto> getStats(String username){
-
-        int totalVisits = consultationRepository.countVisitsByUsername(username);
-        int upcoming = appointmentRepository.countUpcomingByUsername(username);
-        int prescriptions = prescriptionRepository.countByUsername(username);
-
-        return List.of(
-                new PatientStatDto("Total Visits", totalVisits),
-                new PatientStatDto("Upcoming", upcoming),
-                new PatientStatDto("Prescriptions", prescriptions)
-        );
-    }
 
     public List<PatientRespDto> all() {
         return patientRepository.findAll().stream()

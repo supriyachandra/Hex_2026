@@ -43,7 +43,7 @@ export function BookAppointment() {
                 setDates(uniqueDates)
             }
             catch (err) {
-                //err
+                console.log(err)
             }
         }
 
@@ -53,7 +53,7 @@ export function BookAppointment() {
 
 
     useEffect(() => {
-        if (!appointmentDate) return
+        if (!appointmentDate) return    //return if date not selected
 
         const fetchTimes = async () => {
             try {
@@ -67,7 +67,7 @@ export function BookAppointment() {
 
                 setTimes(res.data)
             } catch (err) {
-                // err
+                console.log(err)
             }
         }
 
@@ -95,7 +95,7 @@ export function BookAppointment() {
             setSmsg("Appointment Booked!")
         }
         catch (err) {
-            //err
+            console.log(err)
         }
     }
 
@@ -136,7 +136,8 @@ export function BookAppointment() {
                                 <div className="card-body">
                                     <form onSubmit={(e) => bookApp(e)}>
 
-                                        {preselectedDate ? (
+                                        {
+                                        preselectedDate ? (
                                             <div className="mb-3">
                                                 <label>Select Date</label>
                                                 <div className="date-display">

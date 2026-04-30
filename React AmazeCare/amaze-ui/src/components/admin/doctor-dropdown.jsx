@@ -22,7 +22,7 @@ export default function DoctorSearchDropdown({ onSelect }) {
         fecthDoctors()
     }, []);
 
-    // filtered doctors list
+    // filtered doctors list -- whenever u use filtered, search item is filtered on doctor
     const filtered = doctors.filter(d =>
         d.name.toLowerCase().includes(search.toLowerCase()) ||
         d.specialization.toLowerCase().includes(search.toLowerCase())
@@ -50,7 +50,7 @@ export default function DoctorSearchDropdown({ onSelect }) {
                             onClick={() => {
                                 setSearch(d.name);
                                 setShowDropdown(false);
-                                onSelect(d);
+                                onSelect(d); //prop, function data is sent to parent (doctor is sent)
                             }}
                         >
                             {d.name} • {d.specialization}

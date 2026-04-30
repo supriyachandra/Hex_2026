@@ -17,13 +17,12 @@ export function AdminDoctors() {
     const [totalPages, setTotalPages] = useState(0);
 
     // modal states
-    const [selectedDoctorId, setSelectedDoctorId] = useState(null);
-    const [showScheduleModal, setShowScheduleModal] = useState(false);
+    // const [selectedDoctorId, setSelectedDoctorId] = useState(null);
+    // const [showScheduleModal, setShowScheduleModal] = useState(false);
 
     
     const [showModal, setShowModal] = useState(false);
 
-    const size = 10;
 
     // form state
     const [name, setName] = useState("");
@@ -37,6 +36,7 @@ export function AdminDoctors() {
     const [password, setPassword] = useState("");
 
 
+    const size = 6;
     // fetch doctors
     const fetchDoctors = async (page = 0) => {
         try {
@@ -45,7 +45,7 @@ export function AdminDoctors() {
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("token")
                 }
-            });
+            })
 
             setDoctors(res.data.data);
             setTotalPages(res.data.totalPages);
@@ -80,7 +80,7 @@ export function AdminDoctors() {
 
 
 
-    // ➕ ADD DOCTOR
+    //  ADD DOCTOR
     const handleAddDoctor = async (e) => {
         e.preventDefault();
 
@@ -195,7 +195,7 @@ export function AdminDoctors() {
                             <button
                                 className="btn btn-outline-secondary me-2"
                                 disabled={currentPage === 0}
-                                onClick={() => fetchDoctors(currentPage - 1)}
+                                onClick={()=> fetchDoctors(currentPage-1)}
                             >
                                 Previous
                             </button>
@@ -206,8 +206,8 @@ export function AdminDoctors() {
 
                             <button
                                 className="btn btn-outline-secondary ms-2"
-                                disabled={currentPage === totalPages - 1}
-                                onClick={() => fetchDoctors(currentPage + 1)}
+                                disabled={currentPage === totalPages- 1}
+                                onClick={() => fetchDoctors(currentPage+ 1)}
                             >
                                 Next
                             </button>
@@ -218,15 +218,15 @@ export function AdminDoctors() {
                 </div>
             </div>
 
-            {/* schedule modal */}
+            {/* schedule modal
             {showScheduleModal && (
                 <DoctorScheduleModal
                     doctorId={selectedDoctorId}
                     onClose={() => setShowScheduleModal(false)}
                 />
-            )}
+            )} */}
 
-            {/* MODAL */}
+            {/* MODAL- add doctor */}
             {showModal && (
                 <>
                     <div className="modal show d-block">

@@ -24,14 +24,14 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-@Slf4j      //---------add logs here
+@Slf4j     //---------add logs here
 public class AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
     private final PatientService patientService;
     private final DoctorService doctorService;
 
-    private String invalidAppointmentMsg= "Invalid Appointment ID";
+    private final String invalidAppointmentMsg = "Invalid Appointment ID";
 
     public ResponseEntity<HttpStatus> bookAppointment(AppointmentDto appointmentDto, String username, long doctor_id) {
         // Map to Appointment

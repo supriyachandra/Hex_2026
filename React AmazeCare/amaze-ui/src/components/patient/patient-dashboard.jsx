@@ -29,8 +29,7 @@ function PatientDashboard() {
             }
             catch (err) {
                 navigate('/login')
-                // err
-                // patient
+                console.log(err)
             }
         }
 

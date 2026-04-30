@@ -84,7 +84,7 @@ function DoctorDashboard() {
         const fetchIpd = async () => {
             try {
                 const res = await axios.get(ipdApi, {
-                    params: { page: 0, size: 5 }, // small list for dashboard
+                    params: { page: 0, size: 6 }, // small list for dashboard - select view all for all
                     headers: {
                         Authorization: "Bearer " + localStorage.getItem("token")
                     }
@@ -120,7 +120,7 @@ function DoctorDashboard() {
 
                     <div className="container-fluid p-4">
 
-                        
+
                         {/* MIDDLE SECTION */}
                         <div className="row mb-4">
 
@@ -142,21 +142,25 @@ function DoctorDashboard() {
 
                                         {/* pending list */}
                                         {
-                                            pendingList.map((p, index) => (
-                                                <div
-                                                    key={index}
-                                                    className="bg-light rounded p-3 mb-3 d-flex justify-content-between align-items-center"
-                                                >
-                                                    <div>
-                                                        <h6 className="mb-1">{p.patient_name}</h6>
-                                                        <small className="text-muted">{p.app_date}</small>
-                                                    </div>
+                                            pendingList.length === 0 ? (
+                                                <p className="text-muted">No Pending Appointments</p>
+                                            ) : (
+                                                pendingList.map((p, index) => (
+                                                    <div
+                                                        key={index}
+                                                        className="bg-light rounded p-3 mb-3 d-flex justify-content-between align-items-center"
+                                                    >
+                                                        <div>
+                                                            <h6 className="mb-1">{p.patient_name}</h6>
+                                                            <small className="text-muted">{p.app_date}</small>
+                                                        </div>
 
-                                                    <span className="badge bg-warning text-dark">
-                                                        PENDING
-                                                    </span>
-                                                </div>
-                                            ))
+                                                        <span className="badge bg-warning text-dark">
+                                                            PENDING
+                                                        </span>
+                                                    </div>
+                                                ))
+                                            )
                                         }
 
                                     </div>
@@ -180,24 +184,28 @@ function DoctorDashboard() {
 
                                         {/* LIST */}
                                         {
-                                            confirmedList.map((c, index) => (
-                                                <div
-                                                    key={index}
-                                                    className="bg-light rounded p-3 mb-3 d-flex justify-content-between align-items-center"
-                                                >
-                                                    <div>
-                                                        <h6 className="mb-1">{c.patient_name}</h6>
-                                                        <small className="text-muted">
-                                                            {c.app_time_slot} · {c.symptoms}
-                                                        </small>
-                                                    </div>
+                                            confirmedList.length === 0 ? (
+                                                <p className="text-muted">No Confirmed Appointments Today</p>
+                                            ) : (
+                                                confirmedList.map((c, index) => (
+                                                    <div
+                                                        key={index}
+                                                        className="bg-light rounded p-3 mb-3 d-flex justify-content-between align-items-center"
+                                                    >
+                                                        <div>
+                                                            <h6 className="mb-1">{c.patient_name}</h6>
+                                                            <small className="text-muted">
+                                                                {c.app_time_slot} · {c.symptoms}
+                                                            </small>
+                                                        </div>
 
-                                                    <button className="btn btn-outline-secondary"
-                                                        onClick={() => navigate('/check-appointments')}>
-                                                        Start
-                                                    </button>
-                                                </div>
-                                            ))
+                                                        <button className="btn btn-outline-secondary"
+                                                            onClick={() => navigate('/check-appointments')}>
+                                                            Start
+                                                        </button>
+                                                    </div>
+                                                ))
+                                            )
                                         }
 
                                     </div>

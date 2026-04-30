@@ -194,24 +194,6 @@ export default function AdmitPatientModal({ show, onClose, patientId, onSuccess 
 
                         </form>
 
-                        {showDropdown && (
-                            <div className="list-group mt-1" style={{ maxHeight: "150px", overflowY: "auto" }}>
-                                {filteredDoctors.map((d) => (
-                                    <button
-                                        key={d.id}
-                                        className="list-group-item list-group-item-action"
-                                        onClick={() => {
-                                            setSelectedDoctor(d.id);
-                                            setSearch(d.name); // fill input
-                                            setShowDropdown(false);  // 🔥 CLOSE DROPDOWN
-                                        }}
-                                    >
-                                        {d.name}
-                                    </button>
-                                ))}
-                            </div>
-                        )}
-
                     </div>
                 </div>
             </div>

@@ -34,12 +34,9 @@ export function AdminPatients() {
     const allPatientsApi = "http://localhost:8080/api/patient/all"
 
 
-
     const applyPagination = (data, page, searchText) => {
-
-        //search on FULL data (filtered list of patients)
+       //search on FULL data (filtered list of patients)
         let filtered = data
-
         if (searchText) {
             filtered = data.filter(p =>
                 p.name.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -54,10 +51,8 @@ export function AdminPatients() {
         setDisplayPatient(filtered.slice(start, end))
         setTotalPages(Math.ceil(filtered.length / size))
     }
-
-
-
     useEffect(() => {
+        
         const fetchPatient = async () => {
             const response = await axios.get(allPatientsApi, {
                 headers: {
@@ -66,7 +61,6 @@ export function AdminPatients() {
             })
 
             setAllPatients(response.data)
-
             // initial load → page 0
             applyPagination(response.data, 0, search)
         }
